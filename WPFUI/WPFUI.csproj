@@ -95,8 +95,8 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Engine\Engine.csproj">
-      <Project>{0e2ce134-f133-4bbc-a8e0-ad693b07a719}</Project>
+    <ProjectReference Include="..\Engine2\Engine.csproj">
+      <Project>{56e2f674-e9c7-4ebd-8f04-b5ed6cdf34de}</Project>
       <Name>Engine</Name>
     </ProjectReference>
   </ItemGroup>

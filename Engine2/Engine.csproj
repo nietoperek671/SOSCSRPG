@@ -8,7 +8,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Engine2</RootNamespace>
-    <AssemblyName>Engine2</AssemblyName>
+    <AssemblyName>Engine</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -41,8 +41,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Factories\WorldFactory.cs" />
     <Compile Include="Models\Location.cs" />
     <Compile Include="Models\Player.cs" />
+    <Compile Include="Models\World.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModels\GameSession.cs" />
   </ItemGroup>

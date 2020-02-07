@@ -87,9 +87,26 @@
             </Border>
         </Grid>
         <!--#endregion-->
-        
-        <Label Grid.Row="2" Grid.Column="0" Content="Inventory/Quest" Background="BurlyWood"></Label>
 
+        <!--#region Inventory/Quest-->
+        <Grid Grid.Row="2" Grid.Column="0" Background="BurlyWood">
+            <TabControl>
+                <TabItem Header="Inventory">
+                    <DataGrid ItemsSource="{Binding CurrentPlayer.Inventory}" 
+                              AutoGenerateColumns="False"
+                              HeadersVisibility="Column">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Description" Binding="{Binding Name}" Width="*"/>
+                            <DataGridTextColumn Header="Price" Binding="{Binding Price}" Width="Auto"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </TabItem>
+                    
+                <TabItem Header="Quest"></TabItem>
+            </TabControl>
+        </Grid>
+        <!--#endregion-->
+        
         <!--#region Movement grid -->
         <Grid Grid.Row="2" Grid.Column="1" Background="Lavender">
             <Grid.RowDefinitions>

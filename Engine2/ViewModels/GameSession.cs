@@ -31,14 +31,14 @@ namespace Engine.ViewModels
         {
             #region Create player
             CurrentPlayer = new Player
-                            {
-                                Name = "Scott",
-                                CharacterClass = "Fighter",
-                                HitPoints = 10,
-                                Gold = 1_000_000,
-                                ExperiencePoints = 0,
-                                Level = 1
-                            };
+            {
+                Name = "Scott",
+                CharacterClass = "Fighter",
+                HitPoints = 10,
+                Gold = 1_000_000,
+                ExperiencePoints = 0,
+                Level = 1
+            };
             #endregion
 
             CurrentWorld = WorldFactory.CreateWorld();

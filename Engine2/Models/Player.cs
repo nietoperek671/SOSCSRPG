@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Text;
 
@@ -64,7 +65,11 @@ namespace Engine.Models
             }
         }
 
-       
+        public ObservableCollection<GameItem> Inventory { get; set; }
 
+        public Player()
+        {
+            Inventory = new ObservableCollection<GameItem>();
+        }
     }
 }

@@ -19,6 +19,7 @@ namespace Engine.ViewModels
             { 
                 _currentLocation = value;
                 OnPropertyChanged(nameof(CurrentLocation));
+
                 OnPropertyChanged(nameof(HasLocationToEast));
                 OnPropertyChanged(nameof(HasLocationToNorth));
                 OnPropertyChanged(nameof(HasLocationToSouth));

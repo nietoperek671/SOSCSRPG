@@ -26,6 +26,7 @@
 
         <Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Content="Menu" Background="AliceBlue"></Label>
 
+        <!--#region Player info-->
         <Grid Grid.Row="1" Grid.Column="0" Background="Aquamarine">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
@@ -54,8 +55,9 @@
             <Label Grid.Row="5" Grid.Column="0" Content="Level:"/>
             <Label Grid.Row="5" Grid.Column="1" Content="{Binding CurrentPlayer.Level}"/>
         </Grid>
+        <!--#endregion-->
 
-        <Label Grid.Row="1" Grid.Column="1" Content="Game Data" Background="Beige"></Label>
+        <!--#region Game data-->
         <Grid Grid.Row="1" Grid.Column="1" Background="Beige">
             <Grid.RowDefinitions >
                 <RowDefinition Height="*"/>
@@ -84,9 +86,11 @@
                 </Grid>
             </Border>
         </Grid>
+        <!--#endregion-->
         
         <Label Grid.Row="2" Grid.Column="0" Content="Inventory/Quest" Background="BurlyWood"></Label>
 
+        <!--#region Movement grid -->
         <Grid Grid.Row="2" Grid.Column="1" Background="Lavender">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
@@ -132,5 +136,6 @@
                         Visibility="{Binding HasLocationToSouth, Converter={StaticResource BooleanToVisibility}}" />
             </Grid>
         </Grid>
+        <!--#endregion-->
     </Grid>
 </Window>

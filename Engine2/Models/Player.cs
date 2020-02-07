@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Engine.Models
 {
-    public class Player : INotifyPropertyChanged
+    public class Player : BaseNotificationClass
     {
         private int _experiencePoints;
         private string _name;
@@ -64,8 +64,7 @@ namespace Engine.Models
             }
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
-        protected virtual void OnPropertyChanged(string propertyName) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+       
 
     }
 }

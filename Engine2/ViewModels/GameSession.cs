@@ -7,7 +7,7 @@ using System.Text;
 
 namespace Engine.ViewModels
 {
-    public class GameSession : INotifyPropertyChanged
+    public class GameSession : BaseNotificationClass
     {
         private Location _currentLocation;
 
@@ -44,11 +44,6 @@ namespace Engine.ViewModels
 
             CurrentLocation = CurrentWorld.LocationAt(0, -1);
         }
-
-        #region OnPropertyChanged
-        public event PropertyChangedEventHandler PropertyChanged;
-        protected virtual void OnPropertyChanged(string propertyName) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        #endregion
 
         #region Location movement checks
         public bool HasLocationToNorth { get => CurrentWorld.LocationAt(CurrentLocation.XCoordinate, CurrentLocation.YCoordinate + 1) != null; }

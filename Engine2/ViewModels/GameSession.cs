@@ -30,17 +30,18 @@ namespace Engine.ViewModels
         public GameSession()
         {
             #region Create player
-            CurrentPlayer = new Player();
-            CurrentPlayer.Name = "Scott";
-            CurrentPlayer.CharacterClass = "Fighter";
-            CurrentPlayer.HitPoints = 10;
-            CurrentPlayer.Gold = 1_000_000;
-            CurrentPlayer.ExperiencePoints = 0;
-            CurrentPlayer.Level = 1;
+            CurrentPlayer = new Player
+                            {
+                                Name = "Scott",
+                                CharacterClass = "Fighter",
+                                HitPoints = 10,
+                                Gold = 1_000_000,
+                                ExperiencePoints = 0,
+                                Level = 1
+                            };
             #endregion
 
-            WorldFactory factory = new WorldFactory();
-            CurrentWorld = factory.CreateWorld();
+            CurrentWorld = WorldFactory.CreateWorld();
 
             CurrentLocation = CurrentWorld.LocationAt(0, -1);
         }
@@ -55,19 +56,23 @@ namespace Engine.ViewModels
         #region Movement
         public void MoveNorth()
         {
-            CurrentLocation = CurrentWorld.LocationAt(CurrentLocation.XCoordinate, CurrentLocation.YCoordinate + 1);
+            if (HasLocationToNorth)
+                CurrentLocation = CurrentWorld.LocationAt(CurrentLocation.XCoordinate, CurrentLocation.YCoordinate + 1);
         }
         public void MoveWest()
         {
-            CurrentLocation = CurrentWorld.LocationAt(CurrentLocation.XCoordinate - 1, CurrentLocation.YCoordinate);
+            if (HasLocationToWest)
+                CurrentLocation = CurrentWorld.LocationAt(CurrentLocation.XCoordinate - 1, CurrentLocation.YCoordinate);
         }
         public void MoveEast()
         {
-            CurrentLocation = CurrentWorld.LocationAt(CurrentLocation.XCoordinate + 1, CurrentLocation.YCoordinate);
+            if (HasLocationToEast)
+                CurrentLocation = CurrentWorld.LocationAt(CurrentLocation.XCoordinate + 1, CurrentLocation.YCoordinate);
         }
         public void MoveSouth()
         {
-            CurrentLocation = CurrentWorld.LocationAt(CurrentLocation.XCoordinate, CurrentLocation.YCoordinate - 1);
+            if (HasLocationToSouth)
+                CurrentLocation = CurrentWorld.LocationAt(CurrentLocation.XCoordinate, CurrentLocation.YCoordinate - 1);
         }
         #endregion
     }

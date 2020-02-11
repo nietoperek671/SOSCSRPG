@@ -43,6 +43,10 @@ namespace WPFUI
         private void OnClick_MoveWest(object sender, RoutedEventArgs e) => _gameSession.MoveWest();
         private void OnClick_MoveEast(object sender, RoutedEventArgs e) => _gameSession.MoveEast();
         private void OnClick_MoveSouth(object sender, RoutedEventArgs e) => _gameSession.MoveSouth();
-     
+
+        private void OnClick_AttackMonster(object sender, RoutedEventArgs e)
+        {
+            _gameSession.AttackCurrentMonster();
+        }
     }
 }

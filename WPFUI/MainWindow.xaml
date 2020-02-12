@@ -127,7 +127,7 @@
                                 Visibility="{Binding HasMonster, Converter={StaticResource BooleanToVisibility}}"
                                 HorizontalAlignment="Center"
                                 Orientation="Horizontal">
-                        <TextBlock>Current Hit Points</TextBlock>
+                        <TextBlock>Current Hit Points:</TextBlock>
                         <TextBlock Text="{Binding CurrentMonster.HitPoints}"/>
                     </StackPanel>
 

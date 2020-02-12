@@ -9,7 +9,8 @@ using Engine.EventArgs;
 
 namespace Engine.ViewModels
 {
-    public class GameSession : BaseNotificationClass
+    public class 
+        GameSession : BaseNotificationClass
     {
         public event EventHandler<GameMessageEventArgs> OnMessageRaised;
 

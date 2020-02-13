@@ -14,23 +14,38 @@ namespace Engine.Factories
             switch (monsterID)
             {
                 case 1:
-                    Monster snake = new Monster("Snake", "Snake.png", 4, 4, 1, 2, 5, 1);
-                    AddLootItem(snake, 9001, 25);
-                    AddLootItem(snake, 9002, 75);
+                    Monster snake = new Monster("Snake", "Snake.png", 
+                        maximumHitPoints: 4, hitPoints: 4, 
+                        minimumDamage: 1, maximumDamage: 2, 
+                        rewardExperiencePoints: 5, rewardGold: 1);
+                    
+                    AddLootItem(snake, itemID: 9001, percentage: 25);
+                    AddLootItem(snake, itemID: 9002, percentage: 75);
 
                     return snake;
+
                 case 2:
-                    Monster rat = new Monster("Rat", "Rat.png", 4, 4, 1, 1, 5, 1);
-                    AddLootItem(rat, 9003, 25);
-                    AddLootItem(rat, 9004, 75);
+                    Monster rat = new Monster("Rat", "Rat.png", 
+                        maximumHitPoints: 4, hitPoints: 4, 
+                        minimumDamage: 1, maximumDamage: 1, 
+                        rewardExperiencePoints: 5, rewardGold: 1);
+                    
+                    AddLootItem(rat, itemID: 9003, percentage: 25);
+                    AddLootItem(rat, itemID: 9004, percentage: 75);
 
                     return rat;
+
                 case 3:
-                    Monster giantSpider = new Monster("Giant Spider", "GiantSpider.png", 4, 4, 1, 3, 5, 1);
-                    AddLootItem(giantSpider, 9005, 25);
-                    AddLootItem(giantSpider, 9006, 75);
+                    Monster giantSpider = new Monster("Giant Spider", "GiantSpider.png", 
+                        maximumHitPoints: 4, hitPoints: 4, 
+                        minimumDamage: 1, maximumDamage: 3, 
+                        rewardExperiencePoints: 5, rewardGold: 1);
+                    
+                    AddLootItem(giantSpider, itemID: 9005, percentage: 25);
+                    AddLootItem(giantSpider, itemID: 9006, percentage: 75);
 
                     return giantSpider;
+
                 default:
                     throw new ArgumentException($"No such monster id: {monsterID}");
             }

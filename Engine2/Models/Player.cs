@@ -1,44 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Linq;
-using System.Text;
 
 namespace Engine.Models
 {
-    public class Player : BaseNotificationClass
+    public class Player : LivingEntity
     {
         #region Properites
         private int _experiencePoints;
-        private string _name;
         private string _characterClass;
-        private int _hitPoints;
         private int _level;
-        private int _gold;
 
-        public string Name { 
-            get => _name; 
-            set
-            {
-                _name = value;
-                OnPropertyChanged(nameof(Name));
-            }
-        }
         public string CharacterClass { 
             get => _characterClass;
             set
             {
                 _characterClass = value;
                 OnPropertyChanged(nameof(CharacterClass));
-            }
-        }
-        public int HitPoints { 
-            get => _hitPoints; 
-            set
-            {
-                _hitPoints = value;
-                OnPropertyChanged(nameof(HitPoints));
             }
         }
         public int ExperiencePoints
@@ -58,37 +36,13 @@ namespace Engine.Models
                 OnPropertyChanged(nameof(Level));
             }
         }
-        public int Gold { 
-            get => _gold;
-            set
-            {
-                _gold = value;
-                OnPropertyChanged(nameof(Gold));
-            }
-        }
         #endregion
 
-        public ObservableCollection<GameItem> Inventory { get; set; }
-        public List<GameItem> Weapons => Inventory.Where(o => o is Weapon).ToList();
         public ObservableCollection<QuestStatus> Quests { get; set; }
 
         public Player()
         {
-            Inventory = new ObservableCollection<GameItem>();
             Quests = new ObservableCollection<QuestStatus>();
-        }
-
-        public void  AddItemToInventory(GameItem item)
-        {
-            Inventory.Add(item);
-
-            OnPropertyChanged(nameof(Weapons));
-        }
-
-        public void RemoveItemFromInventory(GameItem item)
-        {
-            Inventory.Remove(item);
-            OnPropertyChanged(nameof(Weapons));
         }
 
         public bool HasAllTheseItems(List<ItemQuantity>items) => items.Any(item => Inventory.Count(i => i.ItemTypeID == item.ItemID) < item.Quantity) == false  ;

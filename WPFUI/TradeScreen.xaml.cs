@@ -36,7 +36,7 @@ namespace WPFUI
                 if (Session.CurrentPlayer.Gold >= item.Price)
                 {
                     Session.CurrentPlayer.Gold -= item.Price;
-                    Session.CurrentTrader.RemoveItem(item);
+                    Session.CurrentTrader.RemoveItemFromInventory(item);
                     Session.CurrentPlayer.AddItemToInventory(item);
                 }
                 else

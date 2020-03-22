@@ -13,26 +13,30 @@ namespace Engine.Factories
 
         static ItemFactory()
         {
-            _standardGameItems.Add(new Weapon(1001, "Pointy Stick", 1, 1, 2));
-            _standardGameItems.Add(new Weapon(1002, "Rusty Sword", 5, 1, 3));
-            _standardGameItems.Add(new GameItem(9001, "Snake Fang", 1));
-            _standardGameItems.Add(new GameItem(9002, "Snakeskin", 2));
-            _standardGameItems.Add(new GameItem(9003, "Rat tail", 1));
-            _standardGameItems.Add(new GameItem(9004, "Rat fur", 2));
-            _standardGameItems.Add(new GameItem(9005, "Spider fang", 1));
-            _standardGameItems.Add(new GameItem(9006, "Spider silk", 2));
+            BuildWeapon(1001, "Pointy Stick", 1, 1, 2);
+            BuildWeapon(1002, "Rusty Sword", 5, 1, 3);
+
+            BuildMiscellaneousItem(9001, "Snake Fang", 1);
+            BuildMiscellaneousItem(9002, "Snakeskin", 2);
+            BuildMiscellaneousItem(9003, "Rat tail", 1);
+            BuildMiscellaneousItem(9004, "Rat fur", 2);
+            BuildMiscellaneousItem(9005, "Spider fang", 1);
+            BuildMiscellaneousItem(9006, "Spider silk", 2);
+        }
+
+        private static void BuildMiscellaneousItem(int v1, string v2, int v3)
+        {
+            _standardGameItems.Add(new GameItem(GameItem.ItemCategory.Miscellaneous, v1, v2, v3));
+        }
+
+        private static void BuildWeapon(int v1, string v2, int v3, int v4, int v5)
+        {
+            _standardGameItems.Add(new GameItem(GameItem.ItemCategory.Weapon, v1, v2, v3, true, v4, v5));
         }
 
         public static GameItem CreateGameItem(int itemTypeID)
         {
-            GameItem standardItem = _standardGameItems.FirstOrDefault(item => item.ItemTypeID == itemTypeID);
-
-            if (standardItem is Weapon weapon)
-            {
-                return weapon.Clone();
-            }
-
-            return standardItem?.Clone();
+            return _standardGameItems.FirstOrDefault(item => item.ItemTypeID == itemTypeID)?.Clone();
         }
     }
 }

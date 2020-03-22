@@ -28,6 +28,7 @@ namespace Engine.ViewModels
                 if (_currentPlayer!=null)
                 {
                     _currentPlayer.OnKilled -= OnCurrentPlayerKilled;
+                    _currentPlayer.OnLeveledUp -= OnCurrentPlayerLeveledUp;
                 }
 
                 _currentPlayer = value;
@@ -35,6 +36,7 @@ namespace Engine.ViewModels
                 if (_currentPlayer!=null)
                 {
                     _currentPlayer.OnKilled += OnCurrentPlayerKilled;
+                    _currentPlayer.OnLeveledUp += OnCurrentPlayerLeveledUp;
                 }
             } 
         }
@@ -154,7 +156,7 @@ namespace Engine.ViewModels
             RaiseMessage("");
             RaiseMessage($"You defeated the {CurrentMonster.Name}");
 
-            CurrentPlayer.ExperiencePoints += CurrentMonster.RewardExperiencePoints;
+            CurrentPlayer.AddExperience(CurrentMonster.RewardExperiencePoints);
             RaiseMessage($"You received {CurrentMonster.RewardExperiencePoints} experience points");
 
             CurrentPlayer.ReceiveGold(CurrentMonster.Gold);
@@ -238,11 +240,11 @@ namespace Engine.ViewModels
                         RaiseMessage("");
                         RaiseMessage($"You completed the '{quest.Name}'");
 
-                        CurrentPlayer.ExperiencePoints += quest.RewardExperiencePoints;
                         RaiseMessage($"You received {quest.RewardExperiencePoints} experience points");
+                        CurrentPlayer.AddExperience(quest.RewardExperiencePoints);
 
-                        CurrentPlayer.ReceiveGold(quest.RewardGold);
                         RaiseMessage($"You received {quest.RewardGold} gold");
+                        CurrentPlayer.ReceiveGold(quest.RewardGold);
 
                         foreach (ItemQuantity itemQuantity in quest.RewardItems)
                         {
@@ -279,6 +281,11 @@ namespace Engine.ViewModels
                     quest.RewardItems.ForEach(o => RaiseMessage($"   {o.Quantity} {ItemFactory.CreateGameItem(o.ItemID).Name}"));
                 }
             }
+        }
+
+        private void OnCurrentPlayerLeveledUp(object sender, System.EventArgs eventArg)
+        {
+            RaiseMessage($"You are now level {CurrentPlayer.Level}");
         }
     }
 }

@@ -27,6 +27,7 @@ namespace Engine.ViewModels
             {
                 if (_currentPlayer!=null)
                 {
+                    _currentPlayer.OnActionPerformed -= OnCurrentPlayerPerformedAction;
                     _currentPlayer.OnKilled -= OnCurrentPlayerKilled;
                     _currentPlayer.OnLeveledUp -= OnCurrentPlayerLeveledUp;
                 }
@@ -35,11 +36,14 @@ namespace Engine.ViewModels
 
                 if (_currentPlayer!=null)
                 {
+                    _currentPlayer.OnActionPerformed += OnCurrentPlayerPerformedAction;
                     _currentPlayer.OnKilled += OnCurrentPlayerKilled;
                     _currentPlayer.OnLeveledUp += OnCurrentPlayerLeveledUp;
                 }
             } 
         }
+
+        
 
         public Location CurrentLocation { 
             get => _currentLocation;
@@ -61,8 +65,6 @@ namespace Engine.ViewModels
                 CurrentTrader = CurrentLocation.TraderHere;
             } 
         }
-
-        public GameItem CurrentWeapon { get; set; }
 
         private void GetMonsterAtLocation()
         {
@@ -105,23 +107,13 @@ namespace Engine.ViewModels
 
         public void AttackCurrentMonster()
         {
-            if (CurrentWeapon ==null)
+            if (CurrentPlayer.CurrentWeapon ==null)
             {
                 RaiseMessage("You must have a weapon to fight a monster!");
                 return;
             }
 
-            int damageToMonster = RandomNumberGenerator.NumberBetween(CurrentWeapon.MinimumDamage, CurrentWeapon.MaximumDamage);
-
-            if (damageToMonster==0)
-            {
-                RaiseMessage($"You missed the {CurrentMonster.Name}");
-            }
-            else
-            {
-                RaiseMessage($"You hit the {CurrentMonster.Name} for {damageToMonster}");
-                CurrentMonster.TakeDamage(damageToMonster);
-            }
+            CurrentPlayer.UseCurrentWeaponOn(CurrentMonster);
 
             if (CurrentMonster.IsDead)
             {
@@ -287,6 +279,11 @@ namespace Engine.ViewModels
         private void OnCurrentPlayerLeveledUp(object sender, System.EventArgs eventArg)
         {
             RaiseMessage($"You are now level {CurrentPlayer.Level}");
+        }
+
+        private void OnCurrentPlayerPerformedAction(object sender, string result)
+        {
+            RaiseMessage(result);
         }
     }
 }

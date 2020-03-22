@@ -146,7 +146,7 @@ namespace Engine.ViewModels
         private void OnCurrentPlayerKilled(object sender, System.EventArgs e)
         {
             RaiseMessage("");
-            RaiseMessage($"The {CurrentMonster.Name} killed you");
+            RaiseMessage($"The {CurrentMonster?.Name} killed you");
 
             CurrentLocation = CurrentWorld.LocationAt(0, -1);
             CurrentPlayer.CompletelyHeal();

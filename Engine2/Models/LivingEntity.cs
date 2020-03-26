@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Engine.Models
 {
@@ -18,7 +16,7 @@ namespace Engine.Models
 
 		public string Name
 		{
-			get { return _name; }
+			get => _name;
 			private set
 			{
 				_name = value;
@@ -28,7 +26,7 @@ namespace Engine.Models
 
 		public int CurrentHitPoints
 		{
-			get { return _currentHitPoints; }
+			get => _currentHitPoints;
 			private set
 			{
 				_currentHitPoints = value;
@@ -38,7 +36,7 @@ namespace Engine.Models
 
 		public int MaximumHitPoints
 		{
-			get { return _maximumHitPoints; }
+			get => _maximumHitPoints;
 			protected set
 			{
 				_maximumHitPoints = value;
@@ -48,7 +46,7 @@ namespace Engine.Models
 
 		public int Gold
 		{
-			get { return _gold; }
+			get => _gold;
 			private set
 			{
 				_gold = value;
@@ -181,9 +179,9 @@ namespace Engine.Models
 				GroupedInventory.FirstOrDefault(gi => gi.Item == item) :
 				GroupedInventory.FirstOrDefault(gi => gi.Item.ItemTypeID == item.ItemTypeID);
 
-			if (groupedInventoryItemToRemove!=null)
+			if (groupedInventoryItemToRemove != null)
 			{
-				if (groupedInventoryItemToRemove.Quantity==1)
+				if (groupedInventoryItemToRemove.Quantity == 1)
 				{
 					GroupedInventory.Remove(groupedInventoryItemToRemove);
 				}

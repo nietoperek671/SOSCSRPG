@@ -1,9 +1,5 @@
 ﻿using Engine.Models;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Engine.Actions
 {
@@ -52,7 +48,7 @@ namespace Engine.Actions
             }
         }
 
-        private void ReportResult(string result) 
+        private void ReportResult(string result)
         {
             OnActionPerformed?.Invoke(this, result);
         }

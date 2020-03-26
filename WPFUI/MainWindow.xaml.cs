@@ -60,5 +60,10 @@ namespace WPFUI
             };
             tradeScreen.ShowDialog();
         }
+
+        private void OnClick_UseCurrentConsumable(object sender, RoutedEventArgs e)
+        {
+            _gameSession.UseCurrentConsumable();
+        }
     }
 }

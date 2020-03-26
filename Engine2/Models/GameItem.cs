@@ -12,16 +12,17 @@ namespace Engine.Models
         public enum ItemCategory
         {
             Miscellaneous,
-            Weapon
+            Weapon,
+            Consumable
         }
         public ItemCategory Category { get; }
         public int ItemTypeID { get; }
         public string Name { get; }
         public int Price { get; }
         public bool IsUnique { get; }
-        public AttackWithWeapon Action { get; set; }
+        public IAction Action { get; set; }
 
-        public GameItem(ItemCategory itemCategory, int itemTypeID, string name, int price, bool isUnique = false, AttackWithWeapon action = null)
+        public GameItem(ItemCategory itemCategory, int itemTypeID, string name, int price, bool isUnique = false, IAction action = null)
         {
             Category = itemCategory;
             ItemTypeID = itemTypeID;

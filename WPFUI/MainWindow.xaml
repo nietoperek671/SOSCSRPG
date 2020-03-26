@@ -227,7 +227,6 @@
             </Grid>
 
             <Grid Grid.Row="0" Grid.Column="0"
-              Visibility="{Binding HasMonster, Converter={StaticResource BooleanToVisibility}}"
               HorizontalAlignment="Center"
               VerticalAlignment="Center">
 
@@ -243,14 +242,27 @@
                 </Grid.ColumnDefinitions>
 
                 <ComboBox Grid.Row="0" Grid.Column="0"
+                      Visibility="{Binding HasMonster, Converter={StaticResource BooleanToVisibility}}"
                       ItemsSource="{Binding CurrentPlayer.Weapons}"
                       SelectedItem="{Binding CurrentPlayer.CurrentWeapon}"
                       DisplayMemberPath="Name"
                       SelectedValuePath="ItemTypeID"/>
 
                 <Button Grid.Row="0" Grid.Column="2"
+                        Visibility="{Binding HasMonster, Converter={StaticResource BooleanToVisibility}}"
                         Content="Use"
                         Click="OnClick_AttackMonster"/>
+
+                <ComboBox Grid.Row="1" Grid.Column="0"
+                          Visibility="{Binding CurrentPlayer.HasConsumables, Converter={StaticResource BooleanToVisibility}}"
+                          ItemsSource="{Binding CurrentPlayer.Consumables}"
+                          SelectedItem="{Binding CurrentPlayer.CurrentConsumable}"
+                          DisplayMemberPath="Name"/>
+
+                <Button Grid.Row="1" Grid.Column="2"
+                        Visibility="{Binding CurrentPlayer.HasConsumables, Converter={StaticResource BooleanToVisibility}}"
+                        Content="Use"
+                        Click="OnClick_UseCurrentConsumable"/>
 
             </Grid>
         </Grid>

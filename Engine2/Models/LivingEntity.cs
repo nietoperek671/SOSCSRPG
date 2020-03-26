@@ -13,6 +13,7 @@ namespace Engine.Models
 		private int _gold;
 		private int _level;
 		private GameItem _currentWeapon;
+		private GameItem _currentConsumable;
 
 		public string Name
 		{
@@ -22,6 +23,7 @@ namespace Engine.Models
 				_name = value;
 				OnPropertyChanged();
 			}
+
 		}
 
 		public int CurrentHitPoints
@@ -83,11 +85,36 @@ namespace Engine.Models
 				OnPropertyChanged();
 			}
 		}
+
+		public GameItem CurrentConsumable
+		{
+			get => _currentConsumable;
+			set
+			{
+				if (CurrentConsumable != null)
+				{
+					_currentConsumable.Action.OnActionPerformed -= RaiseActionPerformedEvent;
+				}
+
+				_currentConsumable = value;
+
+				if (CurrentConsumable != null)
+				{
+					_currentConsumable.Action.OnActionPerformed += RaiseActionPerformedEvent;
+				}
+
+				OnPropertyChanged();
+			}
+		}
+
+
 		public ObservableCollection<GameItem> Inventory { get; }
 		public ObservableCollection<GroupedInventoryItem> GroupedInventory { get; }
 
 		public List<GameItem> Weapons => Inventory.Where(i => i.Category == GameItem.ItemCategory.Weapon).ToList();
+		public List<GameItem> Consumables => Inventory.Where(i => i.Category == GameItem.ItemCategory.Consumable).ToList();
 
+		public bool HasConsumables => Consumables.Any();
 		public bool IsDead => CurrentHitPoints <= 0;
 
 		public event EventHandler<string> OnActionPerformed;
@@ -108,6 +135,12 @@ namespace Engine.Models
 		public void UseCurrentWeaponOn(LivingEntity target)
 		{
 			CurrentWeapon.PerformAction(this, target);
+		}
+
+		public void UseCurrentConsumable()
+		{
+			CurrentConsumable.PerformAction(this, this);
+			RemoveItemFromInventory(CurrentConsumable);
 		}
 
 		public void TakeDamage(int hitPointsOfDamage)
@@ -169,6 +202,8 @@ namespace Engine.Models
 			}
 
 			OnPropertyChanged(nameof(Weapons));
+			OnPropertyChanged(nameof(Consumables));
+			OnPropertyChanged(nameof(HasConsumables));
 		}
 
 		public void RemoveItemFromInventory(GameItem item)
@@ -192,6 +227,8 @@ namespace Engine.Models
 			}
 
 			OnPropertyChanged(nameof(Weapons));
+			OnPropertyChanged(nameof(Consumables));
+			OnPropertyChanged(nameof(HasConsumables));
 		}
 
 		private void RaiseOnKilledEvent()

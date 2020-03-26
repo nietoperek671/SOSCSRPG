@@ -77,12 +77,14 @@ namespace Engine.ViewModels
                 if (_currentMonster != null)
                 {
                     _currentMonster.OnKilled -= OnCurrentMonsterKilled;
+                    _currentMonster.OnActionPerformed -= OnCurrentMonsterPerformedAction;
                 }
                 _currentMonster = value;
 
                 if (_currentMonster != null)
                 {
                     _currentMonster.OnKilled += OnCurrentMonsterKilled;
+                    _currentMonster.OnActionPerformed += OnCurrentMonsterPerformedAction;
 
                     RaiseMessage("");
                     RaiseMessage($"You are attacked by {CurrentMonster.Name}!");
@@ -121,22 +123,9 @@ namespace Engine.ViewModels
             }
             else
             {
-                int damageToPlayer = RandomNumberGenerator.NumberBetween(CurrentMonster.MinimumDamage, CurrentMonster.MaximumDamage);
-
-                if (damageToPlayer == 0)
-                {
-                    RaiseMessage($"The monster attacks but misses you.");
-                }
-                else
-                {
-                    RaiseMessage($"The {CurrentMonster.Name} hit you for {damageToPlayer} points.");
-                    CurrentPlayer.TakeDamage(damageToPlayer);
-                }
+                CurrentMonster.UseCurrentWeaponOn(CurrentPlayer);
             }
         }
-
-
-
 
         public GameSession()
         {
@@ -148,6 +137,8 @@ namespace Engine.ViewModels
             {
                 CurrentPlayer.AddItemToInventory(ItemFactory.CreateGameItem(1001));
             }
+
+            CurrentPlayer.AddItemToInventory(ItemFactory.CreateGameItem(2001));
 
             CurrentWorld = WorldFactory.CreateWorld();
 
@@ -263,12 +254,22 @@ namespace Engine.ViewModels
             }
         }
 
+        public void UseCurrentConsumable()
+        {
+            CurrentPlayer.UseCurrentConsumable();
+        }
+
         private void OnCurrentPlayerLeveledUp(object sender, System.EventArgs eventArg)
         {
             RaiseMessage($"You are now level {CurrentPlayer.Level}");
         }
 
         private void OnCurrentPlayerPerformedAction(object sender, string result)
+        {
+            RaiseMessage(result);
+        }
+
+        private void OnCurrentMonsterPerformedAction(object sender, string result)
         {
             RaiseMessage(result);
         }

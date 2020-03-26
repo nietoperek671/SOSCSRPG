@@ -3,7 +3,7 @@ using System;
 
 namespace Engine.Actions
 {
-    public class AttackWithWeapon
+    public class AttackWithWeapon : IAction
     {
         private readonly GameItem _weapon;
         private readonly int _minimumDamage;
@@ -37,13 +37,16 @@ namespace Engine.Actions
         {
             int damage = RandomNumberGenerator.NumberBetween(_minimumDamage, _maximumDamage);
 
+            string actorName = (actor is Player) ? "You" : $"The {actor.Name.ToLower()}";
+            string targetName = (target is Player) ? "you" : $"the {target.Name.ToLower()}";
+
             if (damage == 0)
             {
-                ReportResult($"You missed!");
+                ReportResult($"{actorName} missed {targetName}");
             }
             else
             {
-                ReportResult($"Yout hit the {target.Name} for {damage} points.");
+                ReportResult($"{actorName} hit {targetName} for {damage} point{(damage > 1 ? "s" : "")}");
                 target.TakeDamage(damage);
             }
         }

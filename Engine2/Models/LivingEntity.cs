@@ -231,6 +231,17 @@ namespace Engine.Models
 			OnPropertyChanged(nameof(HasConsumables));
 		}
 
+		public void RemoveItemsFromInventory(List<ItemQuantity> itemQuantities)
+		{
+			foreach (ItemQuantity itemQuantity in itemQuantities)
+			{
+				for (int i = 0; i < itemQuantity.Quantity; i++)
+				{
+					RemoveItemFromInventory(Inventory.First(item => item.ItemTypeID == itemQuantity.ItemID));
+				}
+			}
+		}
+
 		private void RaiseOnKilledEvent()
 		{
 			OnKilled?.Invoke(this, System.EventArgs.Empty);
@@ -241,5 +252,9 @@ namespace Engine.Models
 			OnActionPerformed?.Invoke(this, result);
 		}
 
+		public bool HasAllTheseItems(List<ItemQuantity> items)
+		{
+			return items.Any(item => Inventory.Count(i => i.ItemTypeID == item.ItemID) < item.Quantity) == false;
+		}
 	}
 }

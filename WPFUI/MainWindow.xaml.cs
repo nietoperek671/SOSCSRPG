@@ -1,4 +1,5 @@
 ﻿using Engine.EventArgs;
+using Engine.Models;
 using Engine.ViewModels;
 using System.Windows;
 using System.Windows.Documents;
@@ -64,6 +65,12 @@ namespace WPFUI
         private void OnClick_UseCurrentConsumable(object sender, RoutedEventArgs e)
         {
             _gameSession.UseCurrentConsumable();
+        }
+
+        private void OnClick_Craft(object sender, RoutedEventArgs e)
+        {
+            Recipe recipe = ((FrameworkElement)sender).DataContext as Recipe;
+            _gameSession.CraftItemUsing(recipe);
         }
     }
 }

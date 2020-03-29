@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 
@@ -10,9 +9,10 @@ namespace Engine.Models
         #region Properites
         private int _experiencePoints;
         private string _characterClass;
-        
 
-        public string CharacterClass { 
+
+        public string CharacterClass
+        {
             get => _characterClass;
             set
             {
@@ -32,28 +32,37 @@ namespace Engine.Models
                 SetLevelAndMaximumHitPoints();
             }
         }
-        
+
         #endregion
 
         public ObservableCollection<QuestStatus> Quests { get; }
+        public ObservableCollection<Recipe> Recipes { get; }
 
         public event EventHandler OnLeveledUp;
 
         public Player(string name, string characterClass, int expPoints,
-                      int maximumHitPoints, int currentHitPoints, int gold) 
-            : base(name,maximumHitPoints,currentHitPoints,gold)
+                      int maximumHitPoints, int currentHitPoints, int gold)
+            : base(name, maximumHitPoints, currentHitPoints, gold)
         {
             CharacterClass = characterClass;
             ExperiencePoints = expPoints;
 
             Quests = new ObservableCollection<QuestStatus>();
+            Recipes = new ObservableCollection<Recipe>();
         }
-
-        public bool HasAllTheseItems(List<ItemQuantity> items) => items.Any(item => Inventory.Count(i => i.ItemTypeID == item.ItemID) < item.Quantity) == false;
 
         public void AddExperience(int expPoints)
         {
             ExperiencePoints += expPoints;
+        }
+
+        public void LearnRecipe(Recipe recipe)
+        {
+            if (!Recipes.Any(r => r.ID == recipe.ID))
+            {
+                Recipes.Add(recipe);
+
+            }
         }
 
         private void SetLevelAndMaximumHitPoints()
@@ -62,7 +71,7 @@ namespace Engine.Models
 
             Level = ExperiencePoints / 100 + 1;
 
-            if (Level!= originalLevel)
+            if (Level != originalLevel)
             {
                 MaximumHitPoints = Level * 10;
 

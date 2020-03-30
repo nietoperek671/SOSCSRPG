@@ -24,6 +24,11 @@ namespace Engine.Factories
             BuildMiscellaneousItem(3002, "Honey", 2);
             BuildMiscellaneousItem(3003, "Raisins", 2);
 
+            BuildScroll(4001, "Fireball", 10, 10);
+            BuildScroll(4002, "Ice spike", 10, 10);
+            BuildScroll(4003, "Blizzard", 50, 100);
+            BuildScroll(4004, "Mateor", 50, 100);
+
             BuildMiscellaneousItem(9001, "Snake Fang", 1);
             BuildMiscellaneousItem(9002, "Snakeskin", 2);
             BuildMiscellaneousItem(9003, "Rat tail", 1);
@@ -56,6 +61,15 @@ namespace Engine.Factories
             weapon.Action = new AttackWithWeapon(weapon, minimuDamage, maximumDamage);
 
             _standardGameItems.Add(weapon);
+        }
+
+        private static void BuildScroll(int id, string name, int price, int damage=0)
+        {
+            GameItem scroll = new GameItem(GameItem.ItemCategory.AttackScroll, id, name, price);
+
+            scroll.Action = new AttackWithScroll(scroll, damage);
+
+            _standardGameItems.Add(scroll);
         }
 
         public static GameItem CreateGameItem(int itemTypeID)

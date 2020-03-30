@@ -95,6 +95,23 @@ namespace Engine.ViewModels
             }
         }
 
+        public void UseScroll(GameItem scroll)
+        {
+            if (scroll.Category != GameItem.ItemCategory.AttackScroll)
+            {
+                return;
+            }
+            if (CurrentMonster == null)
+            {
+                return;
+            }
+            //TODO which scroll to use
+            scroll.Action.OnActionPerformed += OnCurrentPlayerPerformedAction;
+            scroll.PerformAction(CurrentPlayer, CurrentMonster);
+            scroll.Action.OnActionPerformed -= OnCurrentPlayerPerformedAction;
+            CurrentPlayer.RemoveItemFromInventory(scroll);
+        }
+
         public Trader CurrentTrader
         {
             get => _currentTrader;
@@ -143,6 +160,8 @@ namespace Engine.ViewModels
             CurrentPlayer.AddItemToInventory(ItemFactory.CreateGameItem(3001));
             CurrentPlayer.AddItemToInventory(ItemFactory.CreateGameItem(3002));
             CurrentPlayer.AddItemToInventory(ItemFactory.CreateGameItem(3003));
+            CurrentPlayer.AddItemToInventory(ItemFactory.CreateGameItem(4001));
+            CurrentPlayer.AddItemToInventory(ItemFactory.CreateGameItem(4002));
 
             CurrentWorld = WorldFactory.CreateWorld();
 

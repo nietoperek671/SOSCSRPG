@@ -13,7 +13,8 @@ namespace Engine.Models
         {
             Miscellaneous,
             Weapon,
-            Consumable
+            Consumable,
+            AttackScroll
         }
         public ItemCategory Category { get; }
         public int ItemTypeID { get; }

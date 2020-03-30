@@ -72,5 +72,11 @@ namespace WPFUI
             Recipe recipe = ((FrameworkElement)sender).DataContext as Recipe;
             _gameSession.CraftItemUsing(recipe);
         }
+
+        private void OnClick_UseScroll(object sender, RoutedEventArgs e)
+        {
+            GameItem scroll = ((FrameworkElement)sender).DataContext as GameItem;
+            _gameSession.UseScroll(scroll);
+        }
     }
 }

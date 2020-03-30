@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 
@@ -37,6 +38,7 @@ namespace Engine.Models
 
         public ObservableCollection<QuestStatus> Quests { get; }
         public ObservableCollection<Recipe> Recipes { get; }
+        public IList<GameItem> Scrolls => Inventory.Where(item => item.Category == GameItem.ItemCategory.AttackScroll).ToList();
 
         public event EventHandler OnLeveledUp;
 
@@ -77,6 +79,19 @@ namespace Engine.Models
 
                 OnLeveledUp?.Invoke(this, System.EventArgs.Empty);
             }
+        }
+
+        public override void AddItemToInventory(GameItem item)
+        {
+            base.AddItemToInventory(item);
+
+            OnPropertyChanged(nameof(Scrolls));
+        }
+        public override void RemoveItemFromInventory(GameItem item)
+        {
+            base.RemoveItemFromInventory(item);
+        
+            OnPropertyChanged(nameof(Scrolls));
         }
     }
 }

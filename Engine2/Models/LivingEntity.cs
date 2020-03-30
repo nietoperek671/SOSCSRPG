@@ -111,8 +111,8 @@ namespace Engine.Models
 		public ObservableCollection<GameItem> Inventory { get; }
 		public ObservableCollection<GroupedInventoryItem> GroupedInventory { get; }
 
-		public List<GameItem> Weapons => Inventory.Where(i => i.Category == GameItem.ItemCategory.Weapon).ToList();
-		public List<GameItem> Consumables => Inventory.Where(i => i.Category == GameItem.ItemCategory.Consumable).ToList();
+		public IList<GameItem> Weapons => Inventory.Where(i => i.Category == GameItem.ItemCategory.Weapon).ToList();
+		public IList<GameItem> Consumables => Inventory.Where(i => i.Category == GameItem.ItemCategory.Consumable).ToList();
 
 		public bool HasConsumables => Consumables.Any();
 		public bool IsDead => CurrentHitPoints <= 0;
@@ -183,7 +183,7 @@ namespace Engine.Models
 			Gold -= amountOfGold;
 		}
 
-		public void AddItemToInventory(GameItem item)
+		public virtual void AddItemToInventory(GameItem item)
 		{
 			Inventory.Add(item);
 
@@ -206,7 +206,7 @@ namespace Engine.Models
 			OnPropertyChanged(nameof(HasConsumables));
 		}
 
-		public void RemoveItemFromInventory(GameItem item)
+		public virtual void RemoveItemFromInventory(GameItem item)
 		{
 			Inventory.Remove(item);
 

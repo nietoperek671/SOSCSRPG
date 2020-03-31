@@ -4,6 +4,7 @@ using Engine.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Input;
 
@@ -15,7 +16,7 @@ namespace WPFUI
     public partial class MainWindow : Window
     {
         private readonly GameSession _gameSession = new GameSession();
-        private readonly Dictionary<Key, Action> _userInputActions = 
+        private readonly Dictionary<Key, Action> _userInputActions =
             new Dictionary<Key, Action>();
         public MainWindow()
         {
@@ -37,6 +38,12 @@ namespace WPFUI
 
             _userInputActions.Add(Key.Z, () => _gameSession.AttackCurrentMonster());
             _userInputActions.Add(Key.C, () => _gameSession.UseCurrentConsumable());
+
+            _userInputActions.Add(Key.Q, () => SetTabFocus("QuestsTabItem"));
+            _userInputActions.Add(Key.R, () => SetTabFocus("RecipesTabItem"));
+            _userInputActions.Add(Key.I, () => SetTabFocus("InventoryTabItem"));
+            _userInputActions.Add(Key.X, () => SetTabFocus("ScrollsTabItem"));
+            _userInputActions.Add(Key.T, () => OnClick_DisplayTradeScreen(this, new RoutedEventArgs()));
         }
 
         private void OnGameMessageRaised(object sender, GameMessageEventArgs e)
@@ -72,12 +79,18 @@ namespace WPFUI
 
         private void OnClick_DisplayTradeScreen(object sender, RoutedEventArgs e)
         {
+            if (_gameSession.CurrentTrader == null)
+            {
+                return;
+            }
+
             TradeScreen tradeScreen = new TradeScreen
             {
                 Owner = this,
                 DataContext = _gameSession
             };
             tradeScreen.ShowDialog();
+
         }
 
         private void OnClick_UseCurrentConsumable(object sender, RoutedEventArgs e)
@@ -102,6 +115,21 @@ namespace WPFUI
             if (_userInputActions.TryGetValue(e.Key, out Action action))
             {
                 action.Invoke();
+            }
+        }
+
+        private void SetTabFocus(string tabName)
+        {
+            foreach (TabItem item in PlayerDataTabControl.Items)
+            {
+                if (item is TabItem tabItem)
+                {
+                    if (tabItem.Name == tabName)
+                    {
+                        tabItem.IsSelected = true;
+                    }
+
+                }
             }
         }
     }

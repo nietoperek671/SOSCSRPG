@@ -142,41 +142,44 @@
 
         <!--#region Inventory/Quest-->
         <Grid Grid.Row="2" Grid.Column="0" Background="BurlyWood">
-            <TabControl>
-                <TabItem Header="Inventory">
+            <TabControl x:Name="PlayerDataTabControl">
+                <TabItem Header="Inventory"
+                         x:Name="InventoryTabItem">
                     <DataGrid ItemsSource="{Binding CurrentPlayer.GroupedInventory}" 
                               AutoGenerateColumns="False"
                               HeadersVisibility="Column">
                         <DataGrid.Columns>
-                            <DataGridTextColumn Header="Description" Binding="{Binding Item.Name}" Width="*"/>
-                            <DataGridTextColumn Header="Qty" IsReadOnly="True" Binding="{Binding Quantity}" Width="Auto"/>
-                            <DataGridTextColumn Header="Price" Binding="{Binding Item.Price}" Width="Auto"/>
+                            <DataGridTextColumn Header="Description" Binding="{Binding Item.Name, Mode=OneWay}" Width="*"/>
+                            <DataGridTextColumn Header="Qty" IsReadOnly="True" Binding="{Binding Quantity, Mode=OneWay}" Width="Auto"/>
+                            <DataGridTextColumn Header="Price" Binding="{Binding Item.Price, Mode=OneWay}" Width="Auto"/>
                         </DataGrid.Columns>
                     </DataGrid>
                 </TabItem>
                     
-                <TabItem Header="Quest">
+                <TabItem Header="Quests"
+                         x:Name="QuestsTabItem">
                     <DataGrid ItemsSource="{Binding CurrentPlayer.Quests}"
                               AutoGenerateColumns="False"
                               HeadersVisibility="Column">
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="Name"
-                                                Binding="{Binding PlayerQuest.Name}"
+                                                Binding="{Binding PlayerQuest.Name, Mode=OneWay}"
                                                 Width="*"/>
                             <DataGridTextColumn Header="Done?"
-                                                Binding="{Binding IsCompleted}"
+                                                Binding="{Binding IsCompleted, Mode=OneWay}"
                                                 Width="Auto"/>
                         </DataGrid.Columns>
                     </DataGrid>
                 </TabItem>
 
-                <TabItem Header="Recipes">
+                <TabItem Header="Recipes"
+                         x:Name="RecipesTabItem">
                     <DataGrid ItemsSource="{Binding CurrentPlayer.Recipes}"
                               AutoGenerateColumns="False"
                               HeadersVisibility="Column">
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="Name"
-                                                Binding="{Binding Name}"
+                                                Binding="{Binding Name, Mode=OneWay}"
                                                 Width="*"/>
                             <DataGridTemplateColumn MinWidth="75">
                                 <DataGridTemplateColumn.CellTemplate>
@@ -193,13 +196,14 @@
                     </DataGrid>
                 </TabItem>
                 
-                <TabItem Header="Scrolls">
+                <TabItem Header="Scrolls"
+                         x:Name="ScrollsTabItem">
                     <DataGrid ItemsSource="{Binding CurrentPlayer.Scrolls}"
                               AutoGenerateColumns="False"
                               HeadersVisibility="Column">
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="Name"
-                                                Binding="{Binding Name}"
+                                                Binding="{Binding Name, Mode=OneWay}"
                                                 Width="*"/>
                             <DataGridTemplateColumn MinWidth="75">
                                 <DataGridTemplateColumn.CellTemplate>

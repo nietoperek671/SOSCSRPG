@@ -98,7 +98,11 @@
   <ItemGroup>
     <Resource Include="Images\Locations\Trader.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="GameData\GameItems.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\Monsters\GiantSpider.png" />
     <Resource Include="Images\Monsters\Rat.png" />

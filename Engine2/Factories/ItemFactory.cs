@@ -1,10 +1,10 @@
-﻿using Engine.Actions;
-using Engine.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Xml;
+using Engine.Actions;
+using Engine.Models;
 
 namespace Engine.Factories
 {
@@ -18,7 +18,7 @@ namespace Engine.Factories
         {
             if (File.Exists(GAME_DATA_FILENAME))
             {
-                XmlDocument data = new XmlDocument();
+                var data = new XmlDocument();
                 data.LoadXml(File.ReadAllText(GAME_DATA_FILENAME));
 
                 LoadItemsFromNodes(data.SelectNodes("/GameItems/Weapons/Weapon"));
@@ -41,33 +41,33 @@ namespace Engine.Factories
 
             foreach (XmlNode node in xmlNodeList)
             {
-                GameItem.ItemCategory itemCategory = DetermineItemCategory(node.Name);
+                var itemCategory = DetermineItemCategory(node.Name);
 
-                GameItem gameItem =
+                var gameItem =
                     new GameItem(itemCategory,
-                    GetXmlAttributeAsInt(node, "ID"),
-                    GetXmlAttributeAsString(node, "Name"),
-                    GetXmlAttributeAsInt(node, "Price"),
-                    itemCategory==GameItem.ItemCategory.Weapon);
+                        GetXmlAttributeAsInt(node, "ID"),
+                        GetXmlAttributeAsString(node, "Name"),
+                        GetXmlAttributeAsInt(node, "Price"),
+                        GameItem.ItemCategory.Weapon == itemCategory);
 
-                if (itemCategory == GameItem.ItemCategory.Weapon)
+                switch (itemCategory)
                 {
-                    gameItem.Action =
-                        new AttackWithWeapon(gameItem,
-                        GetXmlAttributeAsInt(node, "MinimumDamage"),
-                        GetXmlAttributeAsInt(node, "MaximumDamage"));
-                }
-                else if (itemCategory==GameItem.ItemCategory.Consumable)
-                {
-                    gameItem.Action =
-                        new Heal(gameItem,
-                        GetXmlAttributeAsInt(node, "HitPointsToHeal"));
-                }
-                else if (itemCategory==GameItem.ItemCategory.AttackScroll)
-                {
-                    gameItem.Action =
-                        new AttackWithScroll(gameItem,
-                        GetXmlAttributeAsInt(node, "Damage"));
+                    case GameItem.ItemCategory.Weapon:
+                        gameItem.Action =
+                            new AttackWithWeapon(gameItem,
+                                GetXmlAttributeAsInt(node, "MinimumDamage"),
+                                GetXmlAttributeAsInt(node, "MaximumDamage"));
+                        break;
+                    case GameItem.ItemCategory.Consumable:
+                        gameItem.Action =
+                            new Heal(gameItem,
+                                GetXmlAttributeAsInt(node, "HitPointsToHeal"));
+                        break;
+                    case GameItem.ItemCategory.AttackScroll:
+                        gameItem.Action =
+                            new AttackWithScroll(gameItem,
+                                GetXmlAttributeAsInt(node, "Damage"));
+                        break;
                 }
 
                 _standardGameItems.Add(gameItem);
@@ -86,9 +86,9 @@ namespace Engine.Factories
 
         private static string GetXmlAttribute(XmlNode node, string attributeName)
         {
-            XmlAttribute attribute = node.Attributes?[attributeName];
+            var attribute = node.Attributes?[attributeName];
 
-            if (attribute==null)
+            if (attribute == null)
             {
                 throw new ArgumentException($"The attribute '{attributeName}' does not exist");
             }
@@ -109,38 +109,6 @@ namespace Engine.Factories
                 default:
                     return GameItem.ItemCategory.Miscellaneous;
             }
-        }
-
-        private static void BuildHealingItem(int id, string name, int price, int pointsToHeal)
-        {
-            GameItem item = new GameItem(GameItem.ItemCategory.Consumable, id, name, price);
-
-            item.Action = new Heal(item, pointsToHeal);
-
-            _standardGameItems.Add(item);
-        }
-
-        private static void BuildMiscellaneousItem(int id, string name, int price)
-        {
-            _standardGameItems.Add(new GameItem(GameItem.ItemCategory.Miscellaneous, id, name, price));
-        }
-
-        private static void BuildWeapon(int id, string name, int price, int minimuDamage, int maximumDamage)
-        {
-            GameItem weapon = new GameItem(GameItem.ItemCategory.Weapon, id, name, price, true);
-
-            weapon.Action = new AttackWithWeapon(weapon, minimuDamage, maximumDamage);
-
-            _standardGameItems.Add(weapon);
-        }
-
-        private static void BuildScroll(int id, string name, int price, int damage=0)
-        {
-            GameItem scroll = new GameItem(GameItem.ItemCategory.AttackScroll, id, name, price);
-
-            scroll.Action = new AttackWithScroll(scroll, damage);
-
-            _standardGameItems.Add(scroll);
         }
 
         public static GameItem CreateGameItem(int itemTypeID)

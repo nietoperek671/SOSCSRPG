@@ -11,7 +11,7 @@
     <Scroll ID="4001" Name="Fireball" Price="10" Damage="10"/>
     <Scroll ID="4002" Name="Ice spike" Price="10" Damage="10"/>
     <Scroll ID="4003" Name="Blizzard" Price="50" Damage="100"/>
-    <Scroll ID="4004" Name="Mateor" Price="50" Damage="100"/>
+    <Scroll ID="4004" Name="Meteor" Price="50" Damage="100"/>
   </Scrolls>
   <HealingItems>
     <HealingItem ID="2001" Name="Granola bar" Price="5" HitPointsToHeal="2"/>

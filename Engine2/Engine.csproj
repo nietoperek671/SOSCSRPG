@@ -69,6 +69,7 @@
     <Compile Include="Models\World.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RandomNumberGenerator.cs" />
+    <Compile Include="Shared\ExtensionMethods.cs" />
     <Compile Include="ViewModels\GameSession.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -108,5 +109,6 @@
     <Resource Include="Images\Monsters\Rat.png" />
     <Resource Include="Images\Monsters\Snake.png" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

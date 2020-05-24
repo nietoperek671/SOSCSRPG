@@ -5,6 +5,7 @@ using System.Linq;
 using System.Xml;
 using Engine.Actions;
 using Engine.Models;
+using Engine.Shared;
 
 namespace Engine.Factories
 {
@@ -45,9 +46,9 @@ namespace Engine.Factories
 
                 var gameItem =
                     new GameItem(itemCategory,
-                        GetXmlAttributeAsInt(node, "ID"),
-                        GetXmlAttributeAsString(node, "Name"),
-                        GetXmlAttributeAsInt(node, "Price"),
+                        node.AttributeAsInt("ID"),
+                        node.AttributeAsString("Name"),
+                        node.AttributeAsInt("Price"),
                         GameItem.ItemCategory.Weapon == itemCategory);
 
                 switch (itemCategory)
@@ -55,33 +56,23 @@ namespace Engine.Factories
                     case GameItem.ItemCategory.Weapon:
                         gameItem.Action =
                             new AttackWithWeapon(gameItem,
-                                GetXmlAttributeAsInt(node, "MinimumDamage"),
-                                GetXmlAttributeAsInt(node, "MaximumDamage"));
+                                node.AttributeAsInt("MinimumDamage"),
+                                node.AttributeAsInt("MaximumDamage"));
                         break;
                     case GameItem.ItemCategory.Consumable:
                         gameItem.Action =
                             new Heal(gameItem,
-                                GetXmlAttributeAsInt(node, "HitPointsToHeal"));
+                                node.AttributeAsInt("HitPointsToHeal"));
                         break;
                     case GameItem.ItemCategory.AttackScroll:
                         gameItem.Action =
                             new AttackWithScroll(gameItem,
-                                GetXmlAttributeAsInt(node, "Damage"));
+                                node.AttributeAsInt("Damage"));
                         break;
                 }
 
                 _standardGameItems.Add(gameItem);
             }
-        }
-
-        private static string GetXmlAttributeAsString(XmlNode node, string v)
-        {
-            return GetXmlAttribute(node, v);
-        }
-
-        private static int GetXmlAttributeAsInt(XmlNode node, string v)
-        {
-            return Convert.ToInt32(GetXmlAttribute(node, v));
         }
 
         private static string GetXmlAttribute(XmlNode node, string attributeName)

@@ -23,12 +23,10 @@ namespace Engine.ViewModels
 
             #endregion
 
-            if (CurrentPlayer.Weapons.Any() == false)
+            if (CurrentPlayer.Inventory.Weapons.Any() == false)
             {
                 CurrentPlayer.AddItemToInventory(ItemFactory.CreateGameItem(1001));
             }
-
-            
 
             CurrentPlayer.AddItemToInventory(ItemFactory.CreateGameItem(2001));
             CurrentPlayer.LearnRecipe(RecipeFactory.RecipeByID(1));
@@ -193,7 +191,7 @@ namespace Engine.ViewModels
 
                 if (questToComplete != null)
                 {
-                    if (CurrentPlayer.HasAllTheseItems(quest.ItemsToComplete))
+                    if (CurrentPlayer.Inventory.HasAllTheseItems(quest.ItemsToComplete))
                     {
                         CurrentPlayer.RemoveItemsFromInventory(quest.ItemsToComplete);
 
@@ -251,7 +249,7 @@ namespace Engine.ViewModels
 
         public void CraftItemUsing(Recipe recipe)
         {
-            if (CurrentPlayer.HasAllTheseItems(recipe.Ingredients))
+            if (CurrentPlayer.Inventory.HasAllTheseItems(recipe.Ingredients))
             {
                 CurrentPlayer.RemoveItemsFromInventory(recipe.Ingredients);
 
@@ -307,7 +305,7 @@ namespace Engine.ViewModels
             CurrentPlayer.ReceiveGold(CurrentMonster.Gold);
             RaiseMessage($"You received {CurrentMonster.Gold} gold");
 
-            foreach (GameItem gameItem in CurrentMonster.Inventory)
+            foreach (GameItem gameItem in CurrentMonster.Inventory.Items)
             {
                 CurrentPlayer.AddItemToInventory(gameItem);
                 RaiseMessage($"You received one {gameItem.Name}.");

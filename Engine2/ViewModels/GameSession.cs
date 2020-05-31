@@ -1,22 +1,50 @@
-﻿using Engine.EventArgs;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using Engine.EventArgs;
 using Engine.Factories;
 using Engine.Models;
-using System;
-using System.Linq;
 
 namespace Engine.ViewModels
 {
     public class
         GameSession : BaseNotificationClass
     {
-        public event EventHandler<GameMessageEventArgs> OnMessageRaised;
-
         private Location _currentLocation;
         private Monster _currentMonster;
-        private Trader _currentTrader;
         private Player _currentPlayer;
+        private Trader _currentTrader;
+
+        public GameSession()
+        {
+            #region Create player
+
+            CurrentPlayer = new Player("Scott", "Fighter", 0, 10, 10, 1000);
+
+            #endregion
+
+            if (CurrentPlayer.Weapons.Any() == false)
+            {
+                CurrentPlayer.AddItemToInventory(ItemFactory.CreateGameItem(1001));
+            }
+
+            
+
+            CurrentPlayer.AddItemToInventory(ItemFactory.CreateGameItem(2001));
+            CurrentPlayer.LearnRecipe(RecipeFactory.RecipeByID(1));
+            CurrentPlayer.AddItemToInventory(ItemFactory.CreateGameItem(3001));
+            CurrentPlayer.AddItemToInventory(ItemFactory.CreateGameItem(3002));
+            CurrentPlayer.AddItemToInventory(ItemFactory.CreateGameItem(3003));
+            CurrentPlayer.AddItemToInventory(ItemFactory.CreateGameItem(4001));
+            CurrentPlayer.AddItemToInventory(ItemFactory.CreateGameItem(4002));
+
+            CurrentWorld = WorldFactory.CreateWorld();
+
+            CurrentLocation = CurrentWorld.LocationAt(0, -1);
+        }
 
         public World CurrentWorld { get; }
+
         public Player CurrentPlayer
         {
             get => _currentPlayer;
@@ -40,8 +68,6 @@ namespace Engine.ViewModels
             }
         }
 
-
-
         public Location CurrentLocation
         {
             get => _currentLocation;
@@ -64,11 +90,6 @@ namespace Engine.ViewModels
             }
         }
 
-        private void GetMonsterAtLocation()
-        {
-            CurrentMonster = CurrentLocation.GetMonster();
-        }
-
         public Monster CurrentMonster
         {
             get => _currentMonster;
@@ -79,6 +100,7 @@ namespace Engine.ViewModels
                     _currentMonster.OnKilled -= OnCurrentMonsterKilled;
                     _currentMonster.OnActionPerformed -= OnCurrentMonsterPerformedAction;
                 }
+
                 _currentMonster = value;
 
                 if (_currentMonster != null)
@@ -95,23 +117,6 @@ namespace Engine.ViewModels
             }
         }
 
-        public void UseScroll(GameItem scroll)
-        {
-            if (scroll.Category != GameItem.ItemCategory.AttackScroll)
-            {
-                return;
-            }
-            if (CurrentMonster == null)
-            {
-                return;
-            }
-            //TODO which scroll to use
-            scroll.Action.OnActionPerformed += OnCurrentPlayerPerformedAction;
-            scroll.PerformAction(CurrentPlayer, CurrentMonster);
-            scroll.Action.OnActionPerformed -= OnCurrentPlayerPerformedAction;
-            CurrentPlayer.RemoveItemFromInventory(scroll);
-        }
-
         public Trader CurrentTrader
         {
             get => _currentTrader;
@@ -122,7 +127,33 @@ namespace Engine.ViewModels
                 OnPropertyChanged(nameof(HasTrader));
             }
         }
+
         public bool HasTrader => CurrentTrader != null;
+        public event EventHandler<GameMessageEventArgs> OnMessageRaised;
+
+        private void GetMonsterAtLocation()
+        {
+            CurrentMonster = CurrentLocation.GetMonster();
+        }
+
+        public void UseScroll(GameItem scroll)
+        {
+            if (scroll.Category != GameItem.ItemCategory.AttackScroll)
+            {
+                return;
+            }
+
+            if (CurrentMonster == null)
+            {
+                return;
+            }
+
+            //TODO which scroll to use
+            scroll.Action.OnActionPerformed += OnCurrentPlayerPerformedAction;
+            scroll.PerformAction(CurrentPlayer, CurrentMonster);
+            scroll.Action.OnActionPerformed -= OnCurrentPlayerPerformedAction;
+            CurrentPlayer.RemoveItemFromInventory(scroll);
+        }
 
         public void AttackCurrentMonster()
         {
@@ -130,6 +161,7 @@ namespace Engine.ViewModels
             {
                 return;
             }
+
             if (CurrentPlayer.CurrentWeapon == null)
             {
                 RaiseMessage("You must have a weapon to fight a monster!");
@@ -147,70 +179,6 @@ namespace Engine.ViewModels
                 CurrentMonster.UseCurrentWeaponOn(CurrentPlayer);
             }
         }
-
-        public GameSession()
-        {
-            #region Create player
-            CurrentPlayer = new Player("Scott", "Fighter", 0, 10, 10, 1000);
-            #endregion
-
-            if (CurrentPlayer.Weapons.Any() == false)
-            {
-                CurrentPlayer.AddItemToInventory(ItemFactory.CreateGameItem(1001));
-            }
-
-            CurrentPlayer.AddItemToInventory(ItemFactory.CreateGameItem(2001));
-            CurrentPlayer.LearnRecipe(RecipeFactory.RecipeByID(1));
-            CurrentPlayer.AddItemToInventory(ItemFactory.CreateGameItem(3001));
-            CurrentPlayer.AddItemToInventory(ItemFactory.CreateGameItem(3002));
-            CurrentPlayer.AddItemToInventory(ItemFactory.CreateGameItem(3003));
-            CurrentPlayer.AddItemToInventory(ItemFactory.CreateGameItem(4001));
-            CurrentPlayer.AddItemToInventory(ItemFactory.CreateGameItem(4002));
-
-            CurrentWorld = WorldFactory.CreateWorld();
-
-            CurrentLocation = CurrentWorld.LocationAt(0, -1);
-        }
-
-        #region Location movement checks
-        public bool HasLocationToNorth => CurrentWorld.LocationAt(CurrentLocation.XCoordinate, CurrentLocation.YCoordinate + 1) != null;
-        public bool HasLocationToSouth => CurrentWorld.LocationAt(CurrentLocation.XCoordinate, CurrentLocation.YCoordinate - 1) != null;
-        public bool HasLocationToWest => CurrentWorld.LocationAt(CurrentLocation.XCoordinate - 1, CurrentLocation.YCoordinate) != null;
-        public bool HasLocationToEast => CurrentWorld.LocationAt(CurrentLocation.XCoordinate + 1, CurrentLocation.YCoordinate) != null;
-        public bool HasMonster => CurrentMonster != null;
-        #endregion
-
-
-        #region Movement
-        public void MoveNorth()
-        {
-            if (HasLocationToNorth)
-            {
-                CurrentLocation = CurrentWorld.LocationAt(CurrentLocation.XCoordinate, CurrentLocation.YCoordinate + 1);
-            }
-        }
-        public void MoveWest()
-        {
-            if (HasLocationToWest)
-            {
-                CurrentLocation = CurrentWorld.LocationAt(CurrentLocation.XCoordinate - 1, CurrentLocation.YCoordinate);
-            }
-        }
-        public void MoveEast()
-        {
-            if (HasLocationToEast)
-            {
-                CurrentLocation = CurrentWorld.LocationAt(CurrentLocation.XCoordinate + 1, CurrentLocation.YCoordinate);
-            }
-        }
-        public void MoveSouth()
-        {
-            if (HasLocationToSouth)
-            {
-                CurrentLocation = CurrentWorld.LocationAt(CurrentLocation.XCoordinate, CurrentLocation.YCoordinate - 1);
-            }
-        }
-        #endregion
 
         private void RaiseMessage(string message)
         {
@@ -255,7 +223,6 @@ namespace Engine.ViewModels
         private void GivePlayerQuestsAtLocation()
         {
             foreach (Quest quest in CurrentLocation.QuestAvailableHere)
-            {
                 if (!CurrentPlayer.Quests.Any(q => q.PlayerQuest.ID == quest.ID))
                 {
                     CurrentPlayer.Quests.Add(new QuestStatus(quest));
@@ -272,41 +239,36 @@ namespace Engine.ViewModels
                     RaiseMessage($" {quest.RewardExperiencePoints} experience points");
                     quest.RewardItems.ForEach(o => RaiseMessage($"   {o.Quantity} {ItemFactory.CreateGameItem(o.ItemID).Name}"));
                 }
-            }
         }
 
         public void UseCurrentConsumable()
         {
             if (CurrentPlayer.CurrentConsumable != null)
             {
-                CurrentPlayer.UseCurrentConsumable(); 
+                CurrentPlayer.UseCurrentConsumable();
             }
         }
 
-        public void CraftItemUsing(Recipe recipe) 
+        public void CraftItemUsing(Recipe recipe)
         {
             if (CurrentPlayer.HasAllTheseItems(recipe.Ingredients))
             {
                 CurrentPlayer.RemoveItemsFromInventory(recipe.Ingredients);
 
                 foreach (ItemQuantity itemQuantity in recipe.OutputItems)
-                {
-                    for (int i = 0; i < itemQuantity.Quantity; i++)
+                    for (var i = 0; i < itemQuantity.Quantity; i++)
                     {
                         GameItem outputItem = ItemFactory.CreateGameItem(itemQuantity.ItemID);
                         CurrentPlayer.AddItemToInventory(outputItem);
 
                         RaiseMessage($"You craft 1 {outputItem.Name}");
                     }
-                }
             }
             else
             {
-                RaiseMessage($"You don't have the required ingredients: ");
+                RaiseMessage("You don't have the required ingredients: ");
                 foreach (ItemQuantity itemQuantity in recipe.Ingredients)
-                {
                     RaiseMessage($"    {itemQuantity.Quantity} {ItemFactory.ItemName(itemQuantity.ItemID)}");
-                }
             }
         }
 
@@ -352,5 +314,50 @@ namespace Engine.ViewModels
             }
         }
 
+        #region Location movement checks
+
+        public bool HasLocationToNorth => CurrentWorld.LocationAt(CurrentLocation.XCoordinate, CurrentLocation.YCoordinate + 1) != null;
+        public bool HasLocationToSouth => CurrentWorld.LocationAt(CurrentLocation.XCoordinate, CurrentLocation.YCoordinate - 1) != null;
+        public bool HasLocationToWest => CurrentWorld.LocationAt(CurrentLocation.XCoordinate - 1, CurrentLocation.YCoordinate) != null;
+        public bool HasLocationToEast => CurrentWorld.LocationAt(CurrentLocation.XCoordinate + 1, CurrentLocation.YCoordinate) != null;
+        public bool HasMonster => CurrentMonster != null;
+
+        #endregion
+
+        #region Movement
+
+        public void MoveNorth()
+        {
+            if (HasLocationToNorth)
+            {
+                CurrentLocation = CurrentWorld.LocationAt(CurrentLocation.XCoordinate, CurrentLocation.YCoordinate + 1);
+            }
+        }
+
+        public void MoveWest()
+        {
+            if (HasLocationToWest)
+            {
+                CurrentLocation = CurrentWorld.LocationAt(CurrentLocation.XCoordinate - 1, CurrentLocation.YCoordinate);
+            }
+        }
+
+        public void MoveEast()
+        {
+            if (HasLocationToEast)
+            {
+                CurrentLocation = CurrentWorld.LocationAt(CurrentLocation.XCoordinate + 1, CurrentLocation.YCoordinate);
+            }
+        }
+
+        public void MoveSouth()
+        {
+            if (HasLocationToSouth)
+            {
+                CurrentLocation = CurrentWorld.LocationAt(CurrentLocation.XCoordinate, CurrentLocation.YCoordinate - 1);
+            }
+        }
+
+        #endregion
     }
 }

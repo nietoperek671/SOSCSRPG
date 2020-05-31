@@ -12,7 +12,6 @@ namespace Engine.Factories
     public static class ItemFactory
     {
         private const string GAME_DATA_FILENAME = ".\\GameData\\GameItems.xml";
-
         private static readonly List<GameItem> _standardGameItems = new List<GameItem>();
 
         static ItemFactory()
@@ -42,7 +41,7 @@ namespace Engine.Factories
 
             foreach (XmlNode node in xmlNodeList)
             {
-                var itemCategory = DetermineItemCategory(node.Name);
+                GameItem.ItemCategory itemCategory = DetermineItemCategory(node.Name);
 
                 var gameItem =
                     new GameItem(itemCategory,
@@ -77,7 +76,7 @@ namespace Engine.Factories
 
         private static string GetXmlAttribute(XmlNode node, string attributeName)
         {
-            var attribute = node.Attributes?[attributeName];
+            XmlAttribute attribute = node.Attributes?[attributeName];
 
             if (attribute == null)
             {

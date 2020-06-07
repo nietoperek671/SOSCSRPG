@@ -1,30 +1,35 @@
-﻿using Engine.EventArgs;
-using Engine.Models;
-using Engine.ViewModels;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Input;
+using Engine.EventArgs;
+using Engine.Models;
+using Engine.Services;
+using Engine.ViewModels;
 
 namespace WPFUI
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    ///     Interaction logic for MainWindow.xaml
     /// </summary>
     public partial class MainWindow : Window
     {
         private readonly GameSession _gameSession = new GameSession();
+        private readonly MessageBroker _messageBroker = MessageBroker.GetInstance();
+
         private readonly Dictionary<Key, Action> _userInputActions =
             new Dictionary<Key, Action>();
+
         public MainWindow()
         {
             InitializeComponent();
 
             InitializeUserInputActions();
 
-            _gameSession.OnMessageRaised += OnGameMessageRaised;
+            _messageBroker.OnMessageRaised += OnGameMessageRaised;
 
             DataContext = _gameSession;
         }
@@ -84,13 +89,12 @@ namespace WPFUI
                 return;
             }
 
-            TradeScreen tradeScreen = new TradeScreen
+            var tradeScreen = new TradeScreen
             {
                 Owner = this,
                 DataContext = _gameSession
             };
             tradeScreen.ShowDialog();
-
         }
 
         private void OnClick_UseCurrentConsumable(object sender, RoutedEventArgs e)
@@ -100,17 +104,17 @@ namespace WPFUI
 
         private void OnClick_Craft(object sender, RoutedEventArgs e)
         {
-            Recipe recipe = ((FrameworkElement)sender).DataContext as Recipe;
+            var recipe = ((FrameworkElement) sender).DataContext as Recipe;
             _gameSession.CraftItemUsing(recipe);
         }
 
         private void OnClick_UseScroll(object sender, RoutedEventArgs e)
         {
-            GameItem scroll = ((FrameworkElement)sender).DataContext as GameItem;
+            var scroll = ((FrameworkElement) sender).DataContext as GameItem;
             _gameSession.UseScroll(scroll);
         }
 
-        private void MainWindow_OnKeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+        private void MainWindow_OnKeyDown(object sender, KeyEventArgs e)
         {
             if (_userInputActions.TryGetValue(e.Key, out Action action))
             {
@@ -121,16 +125,13 @@ namespace WPFUI
         private void SetTabFocus(string tabName)
         {
             foreach (TabItem item in PlayerDataTabControl.Items)
-            {
                 if (item is TabItem tabItem)
                 {
                     if (tabItem.Name == tabName)
                     {
                         tabItem.IsSelected = true;
                     }
-
                 }
-            }
         }
     }
 }

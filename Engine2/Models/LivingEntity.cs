@@ -129,7 +129,8 @@ namespace Engine.Models
             }
         }
 
-        public bool IsDead => CurrentHitPoints <= 0;
+        public bool IsAlive => CurrentHitPoints > 0;
+        public bool IsDead => !IsAlive;
         public event EventHandler<string> OnActionPerformed;
         public event EventHandler OnKilled;
 

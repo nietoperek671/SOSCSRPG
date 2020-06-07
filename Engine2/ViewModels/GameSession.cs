@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.Remoting.Channels;
 using Engine.EventArgs;
 using Engine.Factories;
 using Engine.Models;
@@ -23,7 +22,8 @@ namespace Engine.ViewModels
         {
             #region Create player
 
-            CurrentPlayer = new Player("Scott", "Fighter", 0, 10, 10, 1000);
+            int dex = RandomNumberGenerator.NumberBetween(3, 18);
+            CurrentPlayer = new Player("Scott", "Fighter", 0, dex, 10, 10, 1000);
 
             #endregion
 

@@ -23,14 +23,12 @@ namespace Engine.Models
 
             _messageBroker.RaiseMessage("");
             _messageBroker.RaiseMessage($"You see a {_opponent.Name} here!");
-            if (FirstAttacker == Combatant.Opponent)
+            if (CombatService.FirstAttacker(_player, _opponent) == CombatService.Combatant.Opponent)
             {
                 AttackPlayer();
             }
         }
 
-        private static Combatant FirstAttacker =>
-            RandomNumberGenerator.NumberBetween(1, 2) == 1 ? Combatant.Player : Combatant.Opponent;
 
         public void Dispose()
         {
@@ -87,10 +85,5 @@ namespace Engine.Models
 
         public event EventHandler<CombatVictoryEventArgs> OnCombatVictory;
 
-        private enum Combatant
-        {
-            Player,
-            Opponent
-        }
     }
 }

@@ -11,10 +11,11 @@ namespace Engine.Models
             string name,
             string characterClass,
             int expPoints,
+            int dexterity,
             int maximumHitPoints,
             int currentHitPoints,
             int gold)
-            : base(name, maximumHitPoints, currentHitPoints, gold)
+            : base(name, maximumHitPoints, currentHitPoints, gold, dexterity)
         {
             CharacterClass = characterClass;
             ExperiencePoints = expPoints;

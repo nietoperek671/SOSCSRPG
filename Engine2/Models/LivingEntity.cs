@@ -15,16 +15,28 @@ namespace Engine.Models
         private int _level;
         private int _maximumHitPoints;
         private string _name;
+        private int _dexterity;
 
-        protected LivingEntity(string name, int maximumHitPoints, int currentHitPoints, int gold, int level = 1)
+        protected LivingEntity(string name, int maximumHitPoints, int currentHitPoints, int gold, int dexterity, int level = 1)
         {
             Name = name;
             MaximumHitPoints = maximumHitPoints;
             CurrentHitPoints = currentHitPoints;
             Gold = gold;
+            Dexterity = dexterity;
             Level = level;
 
             Inventory = new Inventory();
+        }
+
+        public int Dexterity
+        {
+            get => _dexterity;
+            set
+            {
+                _dexterity = value;
+                OnPropertyChanged();
+            }
         }
 
         public string Name

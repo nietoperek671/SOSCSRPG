@@ -36,12 +36,16 @@ namespace Engine.Factories
                         node.SelectSingleNode("./Name")?.InnerText ?? "");
 
                 foreach (XmlNode childNode in node.SelectNodes("./Ingredients/Item"))
+                {
                     recipe.AddIngredient(childNode.AttributeAsInt("ID"),
                         childNode.AttributeAsInt("Quantity"));
+                }
 
                 foreach (XmlNode childNode in node.SelectNodes("./OutputItems/Item"))
+                {
                     recipe.AddOutputItem(childNode.AttributeAsInt("ID"),
                         childNode.AttributeAsInt("Quantity"));
+                }
 
                 _recipes.Add(recipe);
             }

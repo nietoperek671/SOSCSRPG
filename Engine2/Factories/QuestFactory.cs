@@ -1,16 +1,13 @@
-﻿using Engine.Models;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Xml;
+using Engine.Models;
 using Engine.Shared;
 
 namespace Engine.Factories
 {
-    static class QuestFactory
+    internal static class QuestFactory
     {
         private const string GAME_DATA_FILENAME = ".\\GameData\\Quests.xml";
         private static readonly List<Quest> _quests = new List<Quest>();
@@ -19,7 +16,7 @@ namespace Engine.Factories
         {
             if (File.Exists(GAME_DATA_FILENAME))
             {
-                XmlDocument data = new XmlDocument();
+                var data = new XmlDocument();
                 data.LoadXml(File.ReadAllText(GAME_DATA_FILENAME));
 
                 LoadQuestsFromNodes(data.SelectNodes("/Quests/Quest"));
@@ -34,13 +31,13 @@ namespace Engine.Factories
         {
             foreach (XmlNode node in nodes)
             {
-                List<ItemQuantity> itemsToComplete = new List<ItemQuantity>();
-                List<ItemQuantity> rewardItems = new List<ItemQuantity>();
+                var itemsToComplete = new List<ItemQuantity>();
+                var rewardItems = new List<ItemQuantity>();
 
                 foreach (XmlNode childNode in node.SelectNodes("./ItemsToComplete/Item"))
                 {
                     itemsToComplete.Add(new ItemQuantity(childNode.AttributeAsInt("ID"),
-                                                    childNode.AttributeAsInt("Quantity")));
+                        childNode.AttributeAsInt("Quantity")));
                 }
 
                 foreach (XmlNode childNode in node.SelectNodes("./RewardItems/Item"))
@@ -48,6 +45,7 @@ namespace Engine.Factories
                     rewardItems.Add(new ItemQuantity(childNode.AttributeAsInt("ID"),
                         childNode.AttributeAsInt("Quantity")));
                 }
+
                 _quests.Add(new Quest(node.AttributeAsInt("ID"),
                     node.SelectSingleNode("./Name")?.InnerText,
                     node.SelectSingleNode("./Description")?.InnerText,

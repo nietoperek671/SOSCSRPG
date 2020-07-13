@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Engine.Actions;
+﻿using Engine.Actions;
 
 namespace Engine.Models
 {
@@ -16,14 +11,9 @@ namespace Engine.Models
             Consumable,
             AttackScroll
         }
-        public ItemCategory Category { get; }
-        public int ItemTypeID { get; }
-        public string Name { get; }
-        public int Price { get; }
-        public bool IsUnique { get; }
-        public IAction Action { get; set; }
 
-        public GameItem(ItemCategory itemCategory, int itemTypeID, string name, int price, bool isUnique = false, IAction action = null)
+        public GameItem(ItemCategory itemCategory, int itemTypeID, string name, int price, bool isUnique = false,
+            IAction action = null)
         {
             Category = itemCategory;
             ItemTypeID = itemTypeID;
@@ -33,10 +23,14 @@ namespace Engine.Models
             Action = action;
         }
 
-        public GameItem Clone()
-        {
-            return new GameItem(Category, ItemTypeID, Name, Price, IsUnique, Action);
-        }
+        public ItemCategory Category { get; }
+        public int ItemTypeID { get; }
+        public string Name { get; }
+        public int Price { get; }
+        public bool IsUnique { get; }
+        public IAction Action { get; set; }
+
+        public GameItem Clone() => new GameItem(Category, ItemTypeID, Name, Price, IsUnique, Action);
 
         public void PerformAction(LivingEntity actor, LivingEntity target)
         {

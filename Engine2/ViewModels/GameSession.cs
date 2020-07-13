@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using Engine.EventArgs;
 using Engine.Factories;
@@ -22,7 +21,7 @@ namespace Engine.ViewModels
         {
             #region Create player
 
-            int dex = RandomNumberGenerator.NumberBetween(3, 18);
+            var dex = RandomNumberGenerator.NumberBetween(3, 18);
             CurrentPlayer = new Player("Scott", "Fighter", 0, dex, 10, 10, 1000);
 
             #endregion
@@ -164,9 +163,10 @@ namespace Engine.ViewModels
 
         private void CompleteQuestAtLocation()
         {
-            foreach (Quest quest in CurrentLocation.QuestAvailableHere)
+            foreach (var quest in CurrentLocation.QuestAvailableHere)
             {
-                QuestStatus questToComplete = CurrentPlayer.Quests.FirstOrDefault(q => q.PlayerQuest.ID == quest.ID && !q.IsCompleted);
+                var questToComplete =
+                    CurrentPlayer.Quests.FirstOrDefault(q => q.PlayerQuest.ID == quest.ID && !q.IsCompleted);
 
                 if (questToComplete != null)
                 {
@@ -183,9 +183,9 @@ namespace Engine.ViewModels
                         _messageBroker.RaiseMessage($"You received {quest.RewardGold} gold");
                         CurrentPlayer.ReceiveGold(quest.RewardGold);
 
-                        foreach (ItemQuantity itemQuantity in quest.RewardItems)
+                        foreach (var itemQuantity in quest.RewardItems)
                         {
-                            GameItem rewardItem = ItemFactory.CreateGameItem(itemQuantity.ItemID);
+                            var rewardItem = ItemFactory.CreateGameItem(itemQuantity.ItemID);
 
                             CurrentPlayer.AddItemToInventory(rewardItem);
                             _messageBroker.RaiseMessage($"You received a {rewardItem.Name}");
@@ -199,7 +199,8 @@ namespace Engine.ViewModels
 
         private void GivePlayerQuestsAtLocation()
         {
-            foreach (Quest quest in CurrentLocation.QuestAvailableHere)
+            foreach (var quest in CurrentLocation.QuestAvailableHere)
+            {
                 if (!CurrentPlayer.Quests.Any(q => q.PlayerQuest.ID == quest.ID))
                 {
                     CurrentPlayer.Quests.Add(new QuestStatus(quest));
@@ -218,6 +219,7 @@ namespace Engine.ViewModels
                     quest.RewardItems.ForEach(o =>
                         _messageBroker.RaiseMessage($"   {o.Quantity} {ItemFactory.CreateGameItem(o.ItemID).Name}"));
                 }
+            }
         }
 
         public void UseCurrentConsumable()
@@ -234,20 +236,25 @@ namespace Engine.ViewModels
             {
                 CurrentPlayer.RemoveItemsFromInventory(recipe.Ingredients);
 
-                foreach (ItemQuantity itemQuantity in recipe.OutputItems)
+                foreach (var itemQuantity in recipe.OutputItems)
+                {
                     for (var i = 0; i < itemQuantity.Quantity; i++)
                     {
-                        GameItem outputItem = ItemFactory.CreateGameItem(itemQuantity.ItemID);
+                        var outputItem = ItemFactory.CreateGameItem(itemQuantity.ItemID);
                         CurrentPlayer.AddItemToInventory(outputItem);
 
                         _messageBroker.RaiseMessage($"You craft 1 {outputItem.Name}");
                     }
+                }
             }
             else
             {
                 _messageBroker.RaiseMessage("You don't have the required ingredients: ");
-                foreach (ItemQuantity itemQuantity in recipe.Ingredients)
-                    _messageBroker.RaiseMessage($"    {itemQuantity.Quantity} {ItemFactory.ItemName(itemQuantity.ItemID)}");
+                foreach (var itemQuantity in recipe.Ingredients)
+                {
+                    _messageBroker.RaiseMessage(
+                        $"    {itemQuantity.Quantity} {ItemFactory.ItemName(itemQuantity.ItemID)}");
+                }
             }
         }
 
@@ -273,10 +280,18 @@ namespace Engine.ViewModels
 
         #region Location movement checks
 
-        public bool HasLocationToNorth => CurrentWorld.LocationAt(CurrentLocation.XCoordinate, CurrentLocation.YCoordinate + 1) != null;
-        public bool HasLocationToSouth => CurrentWorld.LocationAt(CurrentLocation.XCoordinate, CurrentLocation.YCoordinate - 1) != null;
-        public bool HasLocationToWest => CurrentWorld.LocationAt(CurrentLocation.XCoordinate - 1, CurrentLocation.YCoordinate) != null;
-        public bool HasLocationToEast => CurrentWorld.LocationAt(CurrentLocation.XCoordinate + 1, CurrentLocation.YCoordinate) != null;
+        public bool HasLocationToNorth =>
+            CurrentWorld.LocationAt(CurrentLocation.XCoordinate, CurrentLocation.YCoordinate + 1) != null;
+
+        public bool HasLocationToSouth =>
+            CurrentWorld.LocationAt(CurrentLocation.XCoordinate, CurrentLocation.YCoordinate - 1) != null;
+
+        public bool HasLocationToWest =>
+            CurrentWorld.LocationAt(CurrentLocation.XCoordinate - 1, CurrentLocation.YCoordinate) != null;
+
+        public bool HasLocationToEast =>
+            CurrentWorld.LocationAt(CurrentLocation.XCoordinate + 1, CurrentLocation.YCoordinate) != null;
+
         public bool HasMonster => CurrentMonster != null;
 
         #endregion

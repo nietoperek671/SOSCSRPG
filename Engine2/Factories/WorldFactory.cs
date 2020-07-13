@@ -64,8 +64,10 @@ namespace Engine.Factories
             }
 
             foreach (XmlNode traderNode in traderNodes)
+            {
                 location.TraderHere =
                     TraderFactory.GetTraderByID(traderNode.AttributeAsInt("ID"));
+            }
         }
 
         private static void AddQuests(Location location, XmlNodeList questNodes)
@@ -76,7 +78,9 @@ namespace Engine.Factories
             }
 
             foreach (XmlNode questNode in questNodes)
+            {
                 location.QuestAvailableHere.Add(QuestFactory.GetQuestByID(questNode.AttributeAsInt("ID")));
+            }
         }
 
         private static void AddMonsters(Location location, XmlNodeList monstersList)
@@ -87,8 +91,10 @@ namespace Engine.Factories
             }
 
             foreach (XmlNode MonsterNode in monstersList)
+            {
                 location.AddMonster(MonsterNode.AttributeAsInt("ID"),
                     MonsterNode.AttributeAsInt("Percent"));
+            }
         }
     }
 }

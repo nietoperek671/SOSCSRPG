@@ -1,9 +1,5 @@
-﻿using Engine.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System;
+using Engine.Models;
 
 namespace Engine.Actions
 {
@@ -11,12 +7,10 @@ namespace Engine.Actions
     {
         protected GameItem _itemInUse;
 
+        protected BaseAction(GameItem itemInUse) => _itemInUse = itemInUse;
+
         public event EventHandler<string> OnActionPerformed;
 
-        protected BaseAction(GameItem itemInUse)
-        {
-            _itemInUse = itemInUse;
-        }
         protected void ReportResult(string result)
         {
             OnActionPerformed?.Invoke(this, result);

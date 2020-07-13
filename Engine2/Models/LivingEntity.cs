@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using Engine.Services;
 
 namespace Engine.Models
@@ -10,14 +9,15 @@ namespace Engine.Models
         private GameItem _currentConsumable;
         private int _currentHitPoints;
         private GameItem _currentWeapon;
+        private int _dexterity;
         private int _gold;
         private Inventory _inventory;
         private int _level;
         private int _maximumHitPoints;
         private string _name;
-        private int _dexterity;
 
-        protected LivingEntity(string name, int maximumHitPoints, int currentHitPoints, int gold, int dexterity, int level = 1)
+        protected LivingEntity(string name, int maximumHitPoints, int currentHitPoints, int gold, int dexterity,
+            int level = 1)
         {
             Name = name;
             MaximumHitPoints = maximumHitPoints;

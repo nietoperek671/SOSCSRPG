@@ -6,34 +6,40 @@ namespace Engine.Models
 {
     public class Inventory
     {
+        private readonly List<GroupedInventoryItem> _backingGroupedInventoryItems = new List<GroupedInventoryItem>();
         private readonly List<GameItem> _backingInventory = new List<GameItem>();
-        private readonly List<GroupedInventoryItem> _backingGroupedInventoryItems=new List<GroupedInventoryItem>();
-        public IReadOnlyList<GameItem> Items => 
-            _backingInventory.AsReadOnly();
-        public IReadOnlyList<GroupedInventoryItem> GroupedInventory => 
-            _backingGroupedInventoryItems.AsReadOnly();
-        public IReadOnlyList<GameItem> Weapons => 
-            _backingInventory.ItemsThatAre(GameItem.ItemCategory.Weapon).AsReadOnly();
-        public IReadOnlyList<GameItem> Consumables => 
-            _backingInventory.ItemsThatAre(GameItem.ItemCategory.Consumable).AsReadOnly();
-        public IReadOnlyList<GameItem> Scrolls => 
-            _backingInventory.ItemsThatAre(GameItem.ItemCategory.AttackScroll).AsReadOnly();
-        public bool HasConsumable => Consumables.Any();
 
-        public Inventory(IEnumerable<GameItem> items=null)
+        public Inventory(IEnumerable<GameItem> items = null)
         {
-            if (items==null)
+            if (items == null)
             {
                 return;
             }
 
-            foreach (GameItem item in items)
+            foreach (var item in items)
             {
                 _backingInventory.Add(item);
 
                 AddItemToGroupedInventory(item);
             }
         }
+
+        public IReadOnlyList<GameItem> Items =>
+            _backingInventory.AsReadOnly();
+
+        public IReadOnlyList<GroupedInventoryItem> GroupedInventory =>
+            _backingGroupedInventoryItems.AsReadOnly();
+
+        public IReadOnlyList<GameItem> Weapons =>
+            _backingInventory.ItemsThatAre(GameItem.ItemCategory.Weapon).AsReadOnly();
+
+        public IReadOnlyList<GameItem> Consumables =>
+            _backingInventory.ItemsThatAre(GameItem.ItemCategory.Consumable).AsReadOnly();
+
+        public IReadOnlyList<GameItem> Scrolls =>
+            _backingInventory.ItemsThatAre(GameItem.ItemCategory.AttackScroll).AsReadOnly();
+
+        public bool HasConsumable => Consumables.Any();
 
         public bool HasAllTheseItems(IEnumerable<ItemQuantity> items)
         {
@@ -48,9 +54,9 @@ namespace Engine.Models
             }
             else
             {
-                if (_backingGroupedInventoryItems.All(gi=> gi.Item.ItemTypeID != item.ItemTypeID))
+                if (_backingGroupedInventoryItems.All(gi => gi.Item.ItemTypeID != item.ItemTypeID))
                 {
-                 _backingGroupedInventoryItems.Add(new GroupedInventoryItem(item,1));   
+                    _backingGroupedInventoryItems.Add(new GroupedInventoryItem(item, 1));
                 }
                 else
                 {

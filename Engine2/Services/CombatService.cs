@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Engine.Models;
+﻿using Engine.Models;
 
 namespace Engine.Services
 {
@@ -17,15 +14,15 @@ namespace Engine.Services
         {
             // Formula is: ((Dex(player)^2 - Dex(monster)^2)/10) + Random(-10/10)
             // For dexterity values from 3 to 18, this should produce an offset of +/- 41.5
-            int playerDexterity = player.Dexterity * player.Dexterity;
-            int opponentDexterity = opponent.Dexterity * opponent.Dexterity;
-            decimal dexterityOffset = (playerDexterity - opponentDexterity) / 10m;
-            int randomOffset = RandomNumberGenerator.NumberBetween(-10, 10);
-            decimal totalOffset = dexterityOffset + randomOffset;
+            var playerDexterity = player.Dexterity * player.Dexterity;
+            var opponentDexterity = opponent.Dexterity * opponent.Dexterity;
+            var dexterityOffset = (playerDexterity - opponentDexterity) / 10m;
+            var randomOffset = RandomNumberGenerator.NumberBetween(-10, 10);
+            var totalOffset = dexterityOffset + randomOffset;
 
             return RandomNumberGenerator.NumberBetween(0, 100) <= 50 + totalOffset
-                       ? Combatant.Player
-                       : Combatant.Opponent;
+                ? Combatant.Player
+                : Combatant.Opponent;
         }
 
         public static bool AttackSucceeded(LivingEntity attacker, LivingEntity target)
@@ -33,11 +30,11 @@ namespace Engine.Services
             // Currently using the same formula as FirstAttacker initiative.
             // This will change as we include attack/defense skills,
             // armor, weapon bonuses, enchantments/curses, etc.
-            int playerDexterity = attacker.Dexterity * attacker.Dexterity;
-            int opponentDexterity = target.Dexterity * target.Dexterity;
-            decimal dexterityOffset = (playerDexterity - opponentDexterity) / 10m;
-            int randomOffset = RandomNumberGenerator.NumberBetween(-10, 10);
-            decimal totalOffset = dexterityOffset + randomOffset;
+            var playerDexterity = attacker.Dexterity * attacker.Dexterity;
+            var opponentDexterity = target.Dexterity * target.Dexterity;
+            var dexterityOffset = (playerDexterity - opponentDexterity) / 10m;
+            var randomOffset = RandomNumberGenerator.NumberBetween(-10, 10);
+            var totalOffset = dexterityOffset + randomOffset;
 
             return RandomNumberGenerator.NumberBetween(0, 100) <= 50 + totalOffset;
         }

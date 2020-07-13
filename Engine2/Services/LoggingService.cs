@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 
 namespace Engine.Services
 {
@@ -11,7 +9,7 @@ namespace Engine.Services
 
         static LoggingService()
         {
-            string logDir = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, LOG_FILE_DIRECTORY);
+            var logDir = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, LOG_FILE_DIRECTORY);
 
             if (!Directory.Exists(logDir))
             {
@@ -37,11 +35,9 @@ namespace Engine.Services
             }
         }
 
-        private static string LogFileName()
-        {
-            return Path.Combine(AppDomain.CurrentDomain.BaseDirectory,
+        private static string LogFileName() =>
+            Path.Combine(AppDomain.CurrentDomain.BaseDirectory,
                 LOG_FILE_DIRECTORY,
                 $"SOSCSRPG_{DateTime.Now:yyyyMMdd}.log");
-        }
     }
 }

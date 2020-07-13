@@ -41,7 +41,7 @@ namespace Engine.Factories
 
             foreach (XmlNode node in xmlNodeList)
             {
-                GameItem.ItemCategory itemCategory = DetermineItemCategory(node.Name);
+                var itemCategory = DetermineItemCategory(node.Name);
 
                 var gameItem =
                     new GameItem(itemCategory,
@@ -76,7 +76,7 @@ namespace Engine.Factories
 
         private static string GetXmlAttribute(XmlNode node, string attributeName)
         {
-            XmlAttribute attribute = node.Attributes?[attributeName];
+            var attribute = node.Attributes?[attributeName];
 
             if (attribute == null)
             {

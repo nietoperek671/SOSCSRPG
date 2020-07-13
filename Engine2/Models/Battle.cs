@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using Engine.EventArgs;
 using Engine.Services;
 
@@ -74,7 +72,7 @@ namespace Engine.Models
             _messageBroker.RaiseMessage($"You receive {_opponent.Gold} gold.");
             _player.ReceiveGold(_opponent.Gold);
 
-            foreach (GameItem gameItem in _opponent.Inventory.Items)
+            foreach (var gameItem in _opponent.Inventory.Items)
             {
                 _messageBroker.RaiseMessage($"You received one {gameItem.Name}.");
                 _player.AddItemToInventory(gameItem);
@@ -84,6 +82,5 @@ namespace Engine.Models
         }
 
         public event EventHandler<CombatVictoryEventArgs> OnCombatVictory;
-
     }
 }

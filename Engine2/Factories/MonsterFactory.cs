@@ -54,8 +54,10 @@ namespace Engine.Factories
                 if (lootItemNodes != null)
                 {
                     foreach (XmlNode lootItemNode in lootItemNodes)
+                    {
                         monster.AddItemToLootTable(lootItemNode.AttributeAsInt("ID"),
                             lootItemNode.AttributeAsInt("Percentage"));
+                    }
                 }
 
                 _baseMonsters.Add(monster);

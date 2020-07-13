@@ -34,7 +34,8 @@ namespace Engine.Models
 
         public Monster GetNewInstance()
         {
-            var newMonster = new Monster(ID, Name, ImageName, MaximumHitPoints, Dexterity, CurrentWeapon, RewardExperiencePoints,
+            var newMonster = new Monster(ID, Name, ImageName, MaximumHitPoints, Dexterity, CurrentWeapon,
+                RewardExperiencePoints,
                 Gold);
 
             foreach (var itemPercentage in _lootTable)

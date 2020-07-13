@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
@@ -118,7 +118,7 @@ namespace WPFUI
 
         private void MainWindow_OnKeyDown(object sender, KeyEventArgs e)
         {
-            if (_userInputActions.TryGetValue(e.Key, out Action action))
+            if (_userInputActions.TryGetValue(e.Key, out var action))
             {
                 action.Invoke();
             }
@@ -127,6 +127,7 @@ namespace WPFUI
         private void SetTabFocus(string tabName)
         {
             foreach (TabItem item in PlayerDataTabControl.Items)
+            {
                 if (item is TabItem tabItem)
                 {
                     if (tabItem.Name == tabName)
@@ -134,9 +135,10 @@ namespace WPFUI
                         tabItem.IsSelected = true;
                     }
                 }
+            }
         }
 
-        private void MainWindow_OnClosing(object sender, System.ComponentModel.CancelEventArgs e)
+        private void MainWindow_OnClosing(object sender, CancelEventArgs e)
         {
             SaveGameService.Save(_gameSession);
         }

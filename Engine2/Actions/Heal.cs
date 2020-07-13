@@ -1,5 +1,5 @@
-﻿using Engine.Models;
-using System;
+﻿using System;
+using Engine.Models;
 
 namespace Engine.Actions
 {
@@ -20,10 +20,11 @@ namespace Engine.Actions
 
         public void Execute(LivingEntity actor, LivingEntity target)
         {
-            string actorName = (actor is Player) ? "You" : $"The {actor.Name.ToLower()}";
-            string targetName = (target is Player) ? "yourself" : $"the {target.Name.ToLower()}";
+            var actorName = actor is Player ? "You" : $"The {actor.Name.ToLower()}";
+            var targetName = target is Player ? "yourself" : $"the {target.Name.ToLower()}";
 
-            ReportResult($"{actorName} heal {targetName} for {_hitPointsToHeal} point{(_hitPointsToHeal > 1 ? "s" : "")}");
+            ReportResult(
+                $"{actorName} heal {targetName} for {_hitPointsToHeal} point{(_hitPointsToHeal > 1 ? "s" : "")}");
             target.Heal(_hitPointsToHeal);
         }
     }

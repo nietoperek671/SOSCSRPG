@@ -1,16 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Engine.Models
+﻿namespace Engine.Models
 {
     public class QuestStatus : BaseNotificationClass
     {
         private bool _isCompleted;
 
+        public QuestStatus(Quest quest)
+        {
+            PlayerQuest = quest;
+            IsCompleted = false;
+        }
+
         public Quest PlayerQuest { get; }
+
         public bool IsCompleted
         {
             get => _isCompleted;
@@ -19,11 +20,6 @@ namespace Engine.Models
                 _isCompleted = value;
                 OnPropertyChanged();
             }
-        }
-        public QuestStatus(Quest quest)
-        {
-            PlayerQuest = quest;
-            IsCompleted = false;
         }
     }
 }

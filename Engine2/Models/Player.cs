@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 
@@ -43,7 +42,7 @@ namespace Engine.Models
 
         private void SetLevelAndMaximumHitPoints()
         {
-            int originalLevel = Level;
+            var originalLevel = Level;
 
             Level = ExperiencePoints / 100 + 1;
 

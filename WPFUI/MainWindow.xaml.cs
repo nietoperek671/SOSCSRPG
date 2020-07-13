@@ -17,7 +17,7 @@ namespace WPFUI
     /// </summary>
     public partial class MainWindow : Window
     {
-        private readonly GameSession _gameSession = new GameSession();
+        private readonly GameSession _gameSession;
         private readonly MessageBroker _messageBroker = MessageBroker.GetInstance();
 
         private readonly Dictionary<Key, Action> _userInputActions =
@@ -30,6 +30,8 @@ namespace WPFUI
             InitializeUserInputActions();
 
             _messageBroker.OnMessageRaised += OnGameMessageRaised;
+
+            _gameSession = SaveGameService.LoadLastSaveOrCreateNew();
 
             DataContext = _gameSession;
         }
@@ -132,6 +134,11 @@ namespace WPFUI
                         tabItem.IsSelected = true;
                     }
                 }
+        }
+
+        private void MainWindow_OnClosing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            SaveGameService.Save(_gameSession);
         }
     }
 }

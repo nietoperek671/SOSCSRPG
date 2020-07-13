@@ -45,6 +45,15 @@ namespace Engine.ViewModels
             CurrentLocation = CurrentWorld.LocationAt(0, -1);
         }
 
+        public GameSession(Player player, int x, int y)
+        {
+            CurrentWorld = WorldFactory.CreateWorld();
+            CurrentPlayer = player;
+            CurrentLocation = CurrentWorld.LocationAt(x, y);
+        }
+
+        public string Version { get; } = "0.1.000";
+
         public World CurrentWorld { get; }
 
         public Player CurrentPlayer

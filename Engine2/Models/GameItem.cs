@@ -1,4 +1,5 @@
-﻿using Engine.Actions;
+﻿using System.Text.Json.Serialization;
+using Engine.Actions;
 
 namespace Engine.Models
 {
@@ -23,12 +24,12 @@ namespace Engine.Models
             Action = action;
         }
 
-        public ItemCategory Category { get; }
+        [JsonIgnore] public ItemCategory Category { get; }
         public int ItemTypeID { get; }
-        public string Name { get; }
-        public int Price { get; }
-        public bool IsUnique { get; }
-        public IAction Action { get; set; }
+        [JsonIgnore] public string Name { get; }
+        [JsonIgnore] public int Price { get; }
+        [JsonIgnore] public bool IsUnique { get; }
+        [JsonIgnore] public IAction Action { get; set; }
 
         public GameItem Clone() => new GameItem(Category, ItemTypeID, Name, Price, IsUnique, Action);
 

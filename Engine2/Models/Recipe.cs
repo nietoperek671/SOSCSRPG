@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json.Serialization;
 
 namespace Engine.Models
 {
@@ -13,10 +14,14 @@ namespace Engine.Models
         }
 
         public int ID { get; set; }
+        [JsonIgnore]
         public string Name { get; set; }
+        [JsonIgnore]
         public List<ItemQuantity> Ingredients { get; set; } = new List<ItemQuantity>();
+        [JsonIgnore]
         public List<ItemQuantity> OutputItems { get; set; } = new List<ItemQuantity>();
 
+        [JsonIgnore]
         public string ToolTipContents
         {
             get

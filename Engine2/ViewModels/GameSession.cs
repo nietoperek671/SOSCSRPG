@@ -162,7 +162,7 @@ namespace Engine.ViewModels
 
         public void AttackCurrentMonster()
         {
-            _currentBattle.AttackOpponent();
+            _currentBattle?.AttackOpponent();
         }
 
         private void CompleteQuestAtLocation()
@@ -271,6 +271,8 @@ namespace Engine.ViewModels
         {
             _messageBroker.RaiseMessage("");
             _messageBroker.RaiseMessage($"The {CurrentMonster?.Name} killed you");
+            _currentBattle.Dispose();
+            _currentBattle = null;
 
             CurrentLocation = CurrentWorld.LocationAt(0, -1);
             CurrentPlayer.CompletelyHeal();

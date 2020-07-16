@@ -9,23 +9,21 @@ namespace Engine.Services
 {
     public static class SaveGameService
     {
-        private const string SAVE_GAME_FILE = "SOSCSRPG.json";
-
-        public static void Save(GameSession gamesession)
+        public static void Save(GameSession gamesession, string fileName)
         {
-            File.WriteAllText(SAVE_GAME_FILE, JsonSerializer.Serialize(gamesession));
+            File.WriteAllText(fileName, JsonSerializer.Serialize(gamesession));
         }
 
-        public static GameSession LoadLastSaveOrCreateNew()
+        public static GameSession LoadLastSaveOrCreateNew(string fileName)
         {
-            if (!File.Exists(SAVE_GAME_FILE))
+            if (!File.Exists(fileName))
             {
                 return new GameSession();
             }
 
             try
             {
-                using (var document = JsonDocument.Parse(File.ReadAllText(SAVE_GAME_FILE)))
+                using (var document = JsonDocument.Parse(File.ReadAllText(fileName)))
                 {
                     var player = CreatePlayer(document);
 

@@ -9,6 +9,8 @@ using Engine.EventArgs;
 using Engine.Models;
 using Engine.Services;
 using Engine.ViewModels;
+using Microsoft.Win32;
+using WPFUI.Windows;
 
 namespace WPFUI
 {
@@ -17,7 +19,7 @@ namespace WPFUI
     /// </summary>
     public partial class MainWindow : Window
     {
-        private readonly GameSession _gameSession;
+        private GameSession _gameSession;
         private readonly MessageBroker _messageBroker = MessageBroker.GetInstance();
 
         private readonly Dictionary<Key, Action> _userInputActions =
@@ -29,11 +31,7 @@ namespace WPFUI
 
             InitializeUserInputActions();
 
-            _messageBroker.OnMessageRaised += OnGameMessageRaised;
-
-            _gameSession = SaveGameService.LoadLastSaveOrCreateNew();
-
-            DataContext = _gameSession;
+            SetActiveGameSessionTo(new GameSession());
         }
 
         private void InitializeUserInputActions()
@@ -59,6 +57,8 @@ namespace WPFUI
             GameMessages.ScrollToEnd();
         }
 
+        #region Movement
+
         private void OnClick_MoveNorth(object sender, RoutedEventArgs e)
         {
             _gameSession.MoveNorth();
@@ -77,7 +77,9 @@ namespace WPFUI
         private void OnClick_MoveSouth(object sender, RoutedEventArgs e)
         {
             _gameSession.MoveSouth();
+
         }
+        #endregion
 
         private void OnClick_AttackMonster(object sender, RoutedEventArgs e)
         {
@@ -140,7 +142,72 @@ namespace WPFUI
 
         private void MainWindow_OnClosing(object sender, CancelEventArgs e)
         {
-            SaveGameService.Save(_gameSession);
+            YesNoWindow dialog = new YesNoWindow("Save Game", "Do you want to save game?");
+            dialog.Owner = GetWindow(this);
+            dialog.ShowDialog();
+
+            if (dialog.ClickedYes)
+            {
+                SaveGame();
+            }
         }
+
+        private void StartNewGame_OnClick(object sender, RoutedEventArgs e)
+        {
+            SetActiveGameSessionTo(new GameSession());
+        }
+
+        private void LoadGame_OnClick(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog
+            {
+                InitialDirectory = AppDomain.CurrentDomain.BaseDirectory,
+                Filter = $"Saved games (*.{SAVE_GAME_FILE_EXTENSION})|*.{SAVE_GAME_FILE_EXTENSION}"
+            };
+
+            if (openFileDialog.ShowDialog()==true)
+            {
+                SetActiveGameSessionTo(SaveGameService.LoadLastSaveOrCreateNew(openFileDialog.FileName));
+            }
+        }
+
+        private void SetActiveGameSessionTo(GameSession gameSession)
+        {
+            _messageBroker.OnMessageRaised -= OnGameMessageRaised;
+
+            _gameSession = gameSession;
+            DataContext = gameSession;
+
+            GameMessages.Document.Blocks.Clear();
+
+            _messageBroker.OnMessageRaised += OnGameMessageRaised;
+        }
+
+        private void SaveGame_OnClick(object sender, RoutedEventArgs e)
+        {
+            SaveGame();
+        }
+
+        private void Exit_OnClick(object sender, RoutedEventArgs e)
+        {
+            Close();
+        }
+
+        private void SaveGame()
+        {
+            SaveFileDialog saveFileDialog = new SaveFileDialog
+            {
+                AddExtension = true,
+                InitialDirectory = AppDomain.CurrentDomain.BaseDirectory,
+                Filter = $"Saved games (*.{SAVE_GAME_FILE_EXTENSION})|*.{SAVE_GAME_FILE_EXTENSION}"
+            };
+
+            if (saveFileDialog.ShowDialog() == true)
+            {
+                SaveGameService.Save(_gameSession, saveFileDialog.FileName);
+            }
+        }
+
+        public string SAVE_GAME_FILE_EXTENSION { get; } = "csrpg";
     }
 }
